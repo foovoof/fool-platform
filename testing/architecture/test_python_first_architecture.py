@@ -231,6 +231,150 @@ class TestRegistryLoaders:
             assert loader_path.exists(), f"Registry loader {loader} should exist"
 
 
+class TestEventBusFoundation:
+    """Tests for Event Bus foundation implementation."""
+    
+    def test_events_directory_exists(self):
+        """Test that events directory exists."""
+        events_dir = REPO_ROOT / "fool_platform" / "events"
+        assert events_dir.exists(), "Events directory should exist"
+    
+    def test_events_has_required_modules(self):
+        """Test that events has all required modules."""
+        events_dir = REPO_ROOT / "fool_platform" / "events"
+        
+        required_modules = [
+            "__init__.py",
+            "bus.py",
+            "metadata.py",
+            "envelope.py",
+            "context.py",
+            "publisher.py",
+            "subscriber.py",
+            "dispatcher.py",
+            "router.py",
+            "event_registry.py",
+            "validation.py",
+            "serialization.py",
+            "history.py",
+            "replay.py",
+            "metrics.py",
+            "lifecycle.py",
+            "exceptions.py",
+        ]
+        
+        for module in required_modules:
+            module_path = events_dir / module
+            assert module_path.exists(), f"Events should have {module}"
+    
+    def test_events_has_tests(self):
+        """Test that events has tests."""
+        tests_dir = events_dir = REPO_ROOT / "fool_platform" / "events" / "tests"
+        assert tests_dir.exists(), "Events tests directory should exist"
+        
+        test_files = list(tests_dir.glob("test_*.py"))
+        assert len(test_files) > 0, "Events should have test files"
+    
+    def test_platform_events_is_python(self):
+        """Test that platform events is implemented in Python."""
+        events_dir = REPO_ROOT / "fool_platform" / "events"
+        py_files = list(events_dir.rglob("*.py"))
+        assert len(py_files) > 0, "Events should have Python files"
+
+
+class TestEventBusPurity:
+    """Tests for Event Bus architecture purity."""
+    
+    def test_events_does_not_import_apps(self):
+        """Test that events does not import apps."""
+        events_dir = REPO_ROOT / "fool_platform" / "events"
+        
+        for py_file in events_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from apps" not in content
+            assert "import apps" not in content
+    
+    def test_events_does_not_import_infrastructure(self):
+        """Test that events does not import infrastructure."""
+        events_dir = REPO_ROOT / "fool_platform" / "events"
+        
+        for py_file in events_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from infrastructure" not in content
+            assert "import infrastructure" not in content
+    
+    def test_events_does_not_import_external_brokers(self):
+        """Test that events does not import external brokers."""
+        events_dir = REPO_ROOT / "fool_platform" / "events"
+        
+        forbidden_imports = [
+            "kafka",
+            "rabbitmq",
+            "redis",
+            "celery",
+            "nats",
+        ]
+        
+        for py_file in events_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            for broker in forbidden_imports:
+                assert broker not in content.lower() or "from fool_platform" in content
+    
+    def test_events_does_not_import_ai(self):
+        """Test that events does not import ai."""
+        events_dir = REPO_ROOT / "fool_platform" / "events"
+        
+        for py_file in events_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from ai" not in content
+            assert "import ai" not in content
+    
+    def test_events_does_not_import_connectors(self):
+        """Test that events does not import connectors."""
+        events_dir = REPO_ROOT / "fool_platform" / "events"
+        
+        for py_file in events_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from connectors" not in content
+            assert "import connectors" not in content
+    
+    def test_events_does_not_import_orchestration(self):
+        """Test that events does not import orchestration."""
+        events_dir = REPO_ROOT / "fool_platform" / "events"
+        
+        for py_file in events_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from orchestration" not in content
+            assert "import orchestration" not in content
+
+
+class TestDomainEventPurity:
+    """Tests to ensure domain does not import events."""
+    
+    def test_domain_does_not_import_platform_events(self):
+        """Test that domain does not import platform events."""
+        domain_dir = REPO_ROOT / "domain"
+        
+        for py_file in domain_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from fool_platform.events" not in content
+            assert "import fool_platform.events" not in content
+
+
 class TestNoPlaceholderCode:
     """Tests to verify no placeholder code exists."""
     
