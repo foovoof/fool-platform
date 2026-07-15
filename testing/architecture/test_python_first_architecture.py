@@ -553,3 +553,135 @@ class TestNoPlaceholderCode:
             assert "not implemented" not in lower_content
             assert "coming soon" not in lower_content
             assert "placeholder" not in lower_content
+
+
+class TestAgentRuntimeFoundation:
+    """Tests for Agent Runtime foundation."""
+    
+    def test_agents_directory_exists(self):
+        """Test that agents directory exists."""
+        agents_dir = REPO_ROOT / "fool_platform" / "agents"
+        assert agents_dir.exists(), "Agents directory should exist"
+    
+    def test_agents_has_base_submodule(self):
+        """Test that agents has base submodule."""
+        base_dir = REPO_ROOT / "fool_platform" / "agents" / "base"
+        assert base_dir.exists(), "Base directory should exist"
+        
+        required = [
+            "agent.py",
+            "agent_exceptions.py",
+            "context.py",
+            "lifecycle.py",
+            "memory.py",
+            "models.py",
+            "policies.py",
+            "validation.py",
+            "events.py",
+            "example_agent.py",
+        ]
+        for mod in required:
+            assert (base_dir / mod).exists(), f"Base module {mod} should exist"
+    
+    def test_agents_has_runtime_submodule(self):
+        """Test that agents has runtime submodule."""
+        runtime_dir = REPO_ROOT / "fool_platform" / "agents" / "runtime"
+        assert runtime_dir.exists(), "Runtime directory should exist"
+        
+        required = ["executor.py"]
+        for mod in required:
+            assert (runtime_dir / mod).exists(), f"Runtime module {mod} should exist"
+    
+    def test_agents_has_registry_submodule(self):
+        """Test that agents has registry submodule."""
+        registry_dir = REPO_ROOT / "fool_platform" / "agents" / "registry"
+        assert registry_dir.exists(), "Registry directory should exist"
+        
+        required = ["registry_adapter.py", "agents.yaml", "capabilities.yaml"]
+        for mod in required:
+            assert (registry_dir / mod).exists(), f"Registry module {mod} should exist"
+    
+    def test_agents_has_tests(self):
+        """Test that agents has tests."""
+        tests_dir = REPO_ROOT / "fool_platform" / "agents" / "tests"
+        assert tests_dir.exists(), "Tests directory should exist"
+        
+        test_files = list(tests_dir.glob("test_*.py"))
+        assert len(test_files) > 0, "Agents should have test files"
+
+
+class TestAgentRuntimePurity:
+    """Tests for Agent Runtime architecture purity."""
+    
+    def test_agents_does_not_import_ai(self):
+        """Test that agents does not import ai."""
+        agents_dir = REPO_ROOT / "fool_platform" / "agents"
+        
+        for py_file in agents_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from ai" not in content
+            assert "import ai" not in content
+            assert "openai" not in content.lower()
+            assert "anthropic" not in content.lower()
+    
+    def test_agents_does_not_import_connectors(self):
+        """Test that agents does not import connectors."""
+        agents_dir = REPO_ROOT / "fool_platform" / "agents"
+        
+        for py_file in agents_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from connectors" not in content
+            assert "import connectors" not in content
+    
+    def test_agents_does_not_import_infrastructure(self):
+        """Test that agents does not import infrastructure."""
+        agents_dir = REPO_ROOT / "fool_platform" / "agents"
+        
+        for py_file in agents_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from infrastructure" not in content
+            assert "import infrastructure" not in content
+    
+    def test_agents_does_not_import_applications(self):
+        """Test that agents does not import applications."""
+        agents_dir = REPO_ROOT / "fool_platform" / "agents"
+        
+        for py_file in agents_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from apps" not in content
+            assert "import apps" not in content
+    
+    def test_agents_does_not_import_orchestration(self):
+        """Test that agents base does not import orchestration."""
+        base_dir = REPO_ROOT / "fool_platform" / "agents" / "base"
+        
+        for py_file in base_dir.glob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            # BaseAgent must not depend on orchestration
+            assert "from fool_platform.orchestration" not in content
+            assert "import fool_platform.orchestration" not in content
+
+
+class TestDomainAgentRuntimePurity:
+    """Tests to ensure domain does not import agents."""
+    
+    def test_domain_does_not_import_agents(self):
+        """Test that domain does not import platform agents."""
+        domain_dir = REPO_ROOT / "domain"
+        
+        for py_file in domain_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from fool_platform.agents" not in content
+            assert "import fool_platform.agents" not in content
