@@ -685,3 +685,136 @@ class TestDomainAgentRuntimePurity:
             content = py_file.read_text()
             assert "from fool_platform.agents" not in content
             assert "import fool_platform.agents" not in content
+
+
+class TestKnowledgeFoundation:
+    """Tests for Knowledge layer foundation."""
+    
+    def test_knowledge_directory_exists(self):
+        """Test that knowledge directory exists."""
+        knowledge_dir = REPO_ROOT / "knowledge"
+        assert knowledge_dir.exists(), "Knowledge directory should exist"
+    
+    def test_knowledge_has_graph_submodule(self):
+        """Test that knowledge has graph submodule."""
+        graph_dir = REPO_ROOT / "knowledge" / "graph"
+        assert graph_dir.exists(), "Graph directory should exist"
+        
+        required = ["models", "repository", "traversal", "queries", "validation"]
+        for subdir in required:
+            assert (graph_dir / subdir).exists(), f"Graph submodule {subdir} should exist"
+    
+    def test_knowledge_has_ontology_submodule(self):
+        """Test that knowledge has ontology submodule."""
+        ontology_dir = REPO_ROOT / "knowledge" / "ontology"
+        assert ontology_dir.exists(), "Ontology directory should exist"
+    
+    def test_knowledge_has_resolution_submodule(self):
+        """Test that knowledge has resolution submodule."""
+        resolution_dir = REPO_ROOT / "knowledge" / "resolution"
+        assert resolution_dir.exists(), "Resolution directory should exist"
+    
+    def test_knowledge_has_events_submodule(self):
+        """Test that knowledge has events submodule."""
+        events_dir = REPO_ROOT / "knowledge" / "events"
+        assert events_dir.exists(), "Events directory should exist"
+    
+    def test_knowledge_has_services_submodule(self):
+        """Test that knowledge has services submodule."""
+        services_dir = REPO_ROOT / "knowledge" / "services"
+        assert services_dir.exists(), "Services directory should exist"
+    
+    def test_knowledge_has_tests(self):
+        """Test that knowledge has tests."""
+        tests_dir = REPO_ROOT / "knowledge" / "tests"
+        assert tests_dir.exists(), "Tests directory should exist"
+        
+        test_files = list(tests_dir.glob("test_*.py"))
+        assert len(test_files) > 0, "Knowledge should have test files"
+
+
+class TestKnowledgePurity:
+    """Tests for Knowledge layer architecture purity."""
+    
+    def test_knowledge_does_not_import_ai(self):
+        """Test that knowledge does not import ai."""
+        knowledge_dir = REPO_ROOT / "knowledge"
+        
+        for py_file in knowledge_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from ai" not in content
+            assert "import ai" not in content
+            assert "openai" not in content.lower()
+            assert "anthropic" not in content.lower()
+    
+    def test_knowledge_does_not_import_connectors(self):
+        """Test that knowledge does not import connectors."""
+        knowledge_dir = REPO_ROOT / "knowledge"
+        
+        for py_file in knowledge_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from connectors" not in content
+            assert "import connectors" not in content
+    
+    def test_knowledge_does_not_import_infrastructure(self):
+        """Test that knowledge does not import infrastructure."""
+        knowledge_dir = REPO_ROOT / "knowledge"
+        
+        for py_file in knowledge_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from infrastructure" not in content
+            assert "import infrastructure" not in content
+    
+    def test_knowledge_does_not_import_applications(self):
+        """Test that knowledge does not import applications."""
+        knowledge_dir = REPO_ROOT / "knowledge"
+        
+        for py_file in knowledge_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from apps" not in content
+            assert "import apps" not in content
+    
+    def test_knowledge_does_not_import_agents(self):
+        """Test that knowledge does not import agents."""
+        knowledge_dir = REPO_ROOT / "knowledge"
+        
+        for py_file in knowledge_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from fool_platform.agents" not in content
+            assert "import fool_platform.agents" not in content
+    
+    def test_knowledge_does_not_import_intelligence(self):
+        """Test that knowledge does not import intelligence."""
+        knowledge_dir = REPO_ROOT / "knowledge"
+        
+        for py_file in knowledge_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from intelligence" not in content
+            assert "import intelligence" not in content
+
+
+class TestDomainKnowledgePurity:
+    """Tests to ensure domain does not import knowledge."""
+    
+    def test_domain_does_not_import_knowledge(self):
+        """Test that domain does not import knowledge."""
+        domain_dir = REPO_ROOT / "domain"
+        
+        for py_file in domain_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from knowledge" not in content
+            assert "import knowledge" not in content
