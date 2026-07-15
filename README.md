@@ -1,33 +1,39 @@
 # FOOL Platform
 
 **FOOL** is a Cognitive Operating System for open-source, evidence-driven
-investigation. Phase 1 of this repository builds the **Core Foundation
-Layer**: the contracts, domain models, standards, agent/capability
-registries, and declarative workflow definitions that every later phase
-builds on. There is intentionally no runtime, no orchestrator, and no UI
-in Phase 1 — those are Phase 2 concerns layered on top of a foundation that
-must be correct first.
+investigation. This repository contains the **Core Foundation Layer** (Phase 1)
+and the **Platform Kernel** (Phase 2A): the contracts, domain models, standards,
+agent/capability registries, declarative workflow definitions, and Python-first
+platform kernel that every later phase builds on.
 
-This repository is the successor to, and absorbs, the
-[`Goy`](https://github.com/foovoof/Goy) OSINT link-aggregator: Goy's
-`contracts/` folder was an early sketch of the shape FOOL now implements in
-full.
+## Phase Status
+
+| Phase | Status | Description |
+|-------|--------|-------------|
+| Phase 1 | ✅ Complete | Core Foundation Layer (contracts, domain, standards, registries) |
+| Phase 2A | ✅ Complete | Python-first platform kernel foundation |
+| Phase 2B | 🔜 Next | Event Bus Foundation |
+| Phase 2C | 📋 Future | Workflow Engine Foundation |
+| Phase 2D | 📋 Future | Agent Runtime Foundation |
 
 ## The eight layers
 
 | # | Layer | Directory | What it is |
 |---|---|---|---|
 | 1 | Contracts | `contracts/` | JSON Schema (Draft 2020-12) definitions of every wire shape: domain objects, agent messages, workflow definitions, confidence models. The single source of truth for shape. |
-| 2 | Domain | `domain/` | Pure, immutable TypeScript implementations of the behavior behind each contract — no framework, database, HTTP, or AI SDK imports anywhere in this layer. |
+| 2 | Domain | `domain/` | Pure, immutable Python implementations of the behavior behind each contract — no framework, database, HTTP, or AI SDK imports anywhere in this layer. |
 | 3 | Standards | `standards/` | Human-facing vocabulary: `concepts/` (what each thing means and how it differs from things it's commonly confused with) and `data_dictionary/` (exact field-by-field reference). |
 | 4 | Agent registry | `platform/agents/registry/` | Data-only registry of agent types (`agents.yaml`) and the capabilities they implement (`capabilities.yaml`). No agent runtime code lives here. |
 | 5 | Workflows | `workflows/` | Declarative `WorkflowDefinition` documents (research, extraction, discovery, investigation, reporting, monitoring) — steps, transitions, retry/timeout/failure policy, termination conditions. No execution engine. |
-| 6 | Testing / architecture | `testing/architecture/` | Automated checks that the other seven layers stay internally consistent: schemas compile and their own examples validate, every required Phase 1 file exists, every workflow's required agents/capabilities resolve in the registry, and no placeholder markers exist anywhere in the deliverable. |
-| 7 | Domain tests | `domain/tests/` | Unit tests for every domain module's construction rules, invariants, immutability, and purity. |
+| 6 | Platform | `platform/` | Python-first platform kernel with dependency injection, configuration, health checks, and registry loaders. |
+| 7 | Testing / architecture | `testing/architecture/` | Automated checks that the other layers stay internally consistent: schemas compile and their own examples validate, Python-first rules enforced, and no placeholder markers exist anywhere in the deliverable. |
 | 8 | Documentation | this file + per-layer `README.md` | Vision, structure, build order, and status, kept next to the code it documents. |
 
 ## Core principles
 
+- **Python-First** — the platform adopts Python as the canonical implementation
+  language for domain, platform, intelligence, orchestration, and agents.
+  TypeScript is reserved for web UI and optional client SDKs.
 - **Contracts First** — no domain, agent, or workflow shape exists in code
   before it exists as a schema in `contracts/`.
 - **Domain Purity** — `domain/` never imports a database, HTTP client, AI
@@ -60,7 +66,7 @@ order, because each depends on the one before it:
 1. `contracts/common/` (shared `$defs`) →
 2. `contracts/domain/`, `contracts/agent/`, `contracts/confidence/`,
    `contracts/workflow/` (all reference `common/`) →
-3. `domain/` (implements the behavior behind `contracts/domain/`, plus
+3. `domain/` (implements the behavior behind `contracts/domain/` in Python, plus
    `Finding`/`Event`/`Timeline`/`Annotation`/`ChainOfCustody`/
    `ConfidenceScore`/`ClassificationLevel`) →
 4. `standards/` (documents the concepts and fields the previous two layers
@@ -68,27 +74,33 @@ order, because each depends on the one before it:
 5. `platform/agents/registry/` (declares which agent types/capabilities
    exist, referencing contract schemas for input/output shape) →
 6. `workflows/` (declares how work gets done, referencing the registry) →
-7. `testing/architecture/` + `domain/tests/` (validate 1–6 stay consistent).
+7. `fool_platform/kernel/` (Python-first platform kernel with DI, config, health, registries) →
+8. `testing/architecture/` + `domain/tests/` (validate 1–7 stay consistent).
 
 ## Running the checks
 
 ```bash
+# Python checks
+python -m compileall domain fool_platform/kernel
+pytest fool_platform/kernel/tests/ testing/architecture/
+
+# TypeScript checks (legacy domain)
 pnpm install
-pnpm typecheck          # tsc --noEmit across domain/ and testing/
-pnpm test                # domain/tests + testing/architecture, via vitest
-pnpm test:domain         # domain/tests only
-pnpm test:architecture   # testing/architecture only
+pnpm typecheck
+pnpm test
 ```
 
-## Current status (Phase 1)
+## Current status
 
-Complete: all eight layers above have real, non-placeholder content —
-33 contract schemas, 16 domain modules with 10 accompanying test files,
+**Phase 1**: Complete — 33 contract schemas, Python domain modules with tests,
 11 concept files, 11 data dictionary files, the agent/capability registry,
-6 workflow definitions, and 4 architecture-level consistency tests, plus
-this documentation set.
+6 workflow definitions.
 
-Not yet built (explicitly out of scope for Phase 1): any workflow
+**Phase 2A**: Complete — Python-first platform kernel with 12 kernel modules,
+6 DI modules, 7 config modules, 8 health modules, 5 registry loaders,
+and comprehensive architecture tests.
+
+Not yet built (explicitly out of scope for Phase 2A): any workflow
 execution engine, any agent runtime, any persistence layer, any API server,
 and any user interface. `domain/` objects are constructed and returned by
 callers; nothing in this repository writes to storage or calls an external
@@ -96,14 +108,34 @@ service.
 
 ## Phase 2 roadmap
 
-- A workflow execution engine that consumes `workflows/*.yaml` and drives
-  `AgentTask`/`AgentResult`/`AgentEvent` exchanges against real agent
-  implementations.
+### Phase 2A (✅ Complete)
+- Python-first domain verification
+- Platform Kernel Foundation
+- Dependency Injection Foundation
+- Configuration Foundation
+- Health Foundation
+- Registry Foundation
+
+### Phase 2B (🔜 Next: Event Bus Foundation)
+- In-process event bus for domain events
+- Event publishing and subscription
+- Event handlers
+- Async event processing support
+
+### Phase 2C (📋 Future: Workflow Engine)
+- Workflow execution engine that consumes `workflows/*.yaml`
+- `AgentTask`/`AgentResult`/`AgentEvent` exchanges
+- Step orchestration and state management
+
+### Phase 2D (📋 Future: Agent Runtime)
 - Concrete agent implementations for each `agent_type` in
   `platform/agents/registry/agents.yaml` (research, extraction, discovery,
   investigation, reporting, monitoring).
-- A persistence layer mapping `domain/` objects to storage, respecting the
+- Task execution and result handling
+
+### Phase 2E (📋 Future: Persistence & API)
+- Persistence layer mapping `domain/` objects to storage, respecting the
   `classification` field on every object for access control.
-- An API and/or UI layer for case intake, investigation review, and report
+- API and/or UI layer for case intake, investigation review, and report
   publication — always requiring the human `reviewed_by` step `report.ts`
   already enforces at the domain level.

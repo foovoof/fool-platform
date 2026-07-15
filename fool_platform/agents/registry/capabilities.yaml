@@ -1,0 +1,56 @@
+# platform/agents/registry/capabilities.yaml
+#
+# Canonical registry of agent capabilities. A capability is a named,
+# versioned unit of work an agent can claim to perform. Workflow steps
+# declare `required_capabilities` by id from this registry; agents declare
+# which capability ids they implement in their AgentManifest. This file is
+# pure data — it contains no executable logic.
+
+capabilities:
+  - id: research
+    version: 1.0.0
+    description: >
+      Enumerate and rank candidate public sources relevant to a given query
+      or subject, without collecting evidence from them.
+    input_schema_ref: contracts/agent/agent-task.schema.json
+    output_schema_ref: contracts/agent/agent-result.schema.json
+
+  - id: extraction
+    version: 1.0.0
+    description: >
+      Collect structured Evidence from a single, already-identified Source
+      and normalize it into an Evidence-shaped record.
+    input_schema_ref: contracts/agent/agent-task.schema.json
+    output_schema_ref: contracts/domain/evidence.schema.json
+
+  - id: discovery
+    version: 1.0.0
+    description: >
+      Identify candidate Entities and Relationships suggested by a set of
+      Evidence items, without asserting them as confirmed Findings.
+    input_schema_ref: contracts/agent/agent-task.schema.json
+    output_schema_ref: contracts/domain/entity.schema.json
+
+  - id: investigation
+    version: 1.0.0
+    description: >
+      Synthesize Evidence, Entities, and Relationships into Findings with
+      an explicit confidence rationale, scoped to one Investigation.
+    input_schema_ref: contracts/agent/agent-task.schema.json
+    output_schema_ref: contracts/domain/report.schema.json
+
+  - id: reporting
+    version: 1.0.0
+    description: >
+      Draft a human-reviewable Report synthesizing one or more Findings for
+      a Case; never publishes without a recorded human reviewer.
+    input_schema_ref: contracts/agent/agent-task.schema.json
+    output_schema_ref: contracts/domain/report.schema.json
+
+  - id: monitoring
+    version: 1.0.0
+    description: >
+      Re-run a bounded check against previously-recorded Identities/Entities
+      on a schedule and emit AgentEvents when a material change is detected.
+    input_schema_ref: contracts/agent/agent-task.schema.json
+    output_schema_ref: contracts/agent/agent-event.schema.json
