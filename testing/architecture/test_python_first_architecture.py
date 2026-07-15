@@ -887,6 +887,68 @@ class TestIntelligenceFoundation:
         
         test_files = list(tests_dir.glob("test_*.py"))
         assert len(test_files) > 0, "Intelligence should have test files"
+    
+    def test_intelligence_has_capabilities_submodule(self):
+        """Test that intelligence has capabilities submodule."""
+        capabilities_dir = REPO_ROOT / "intelligence" / "capabilities"
+        assert capabilities_dir.exists(), "Capabilities directory should exist"
+        assert (capabilities_dir / "__init__.py").exists()
+    
+    def test_intelligence_capabilities_has_models_submodule(self):
+        """Test that capabilities has models submodule."""
+        models_dir = REPO_ROOT / "intelligence" / "capabilities" / "models"
+        assert models_dir.exists(), "Capabilities models directory should exist"
+        assert (models_dir / "__init__.py").exists()
+    
+    def test_intelligence_capabilities_has_agents_submodule(self):
+        """Test that capabilities has agents submodule."""
+        agents_dir = REPO_ROOT / "intelligence" / "capabilities" / "agents"
+        assert agents_dir.exists(), "Capabilities agents directory should exist"
+        assert (agents_dir / "__init__.py").exists()
+    
+    def test_intelligence_capabilities_has_pipelines_submodule(self):
+        """Test that capabilities has pipelines submodule."""
+        pipelines_dir = REPO_ROOT / "intelligence" / "capabilities" / "pipelines"
+        assert pipelines_dir.exists(), "Capabilities pipelines directory should exist"
+        assert (pipelines_dir / "__init__.py").exists()
+    
+    def test_intelligence_capabilities_has_execution_submodule(self):
+        """Test that capabilities has execution submodule."""
+        execution_dir = REPO_ROOT / "intelligence" / "capabilities" / "execution"
+        assert execution_dir.exists(), "Capabilities execution directory should exist"
+        assert (execution_dir / "__init__.py").exists()
+    
+    def test_intelligence_capabilities_has_validation_submodule(self):
+        """Test that capabilities has validation submodule."""
+        validation_dir = REPO_ROOT / "intelligence" / "capabilities" / "validation"
+        assert validation_dir.exists(), "Capabilities validation directory should exist"
+        assert (validation_dir / "__init__.py").exists()
+    
+    def test_intelligence_capabilities_has_events_submodule(self):
+        """Test that capabilities has events submodule."""
+        events_dir = REPO_ROOT / "intelligence" / "capabilities" / "events"
+        assert events_dir.exists(), "Capabilities events directory should exist"
+        assert (events_dir / "__init__.py").exists()
+    
+    def test_intelligence_capabilities_has_services_submodule(self):
+        """Test that capabilities has services submodule."""
+        services_dir = REPO_ROOT / "intelligence" / "capabilities" / "services"
+        assert services_dir.exists(), "Capabilities services directory should exist"
+        assert (services_dir / "__init__.py").exists()
+    
+    def test_intelligence_capabilities_has_registry_submodule(self):
+        """Test that capabilities has registry submodule."""
+        registry_dir = REPO_ROOT / "intelligence" / "capabilities" / "registry"
+        assert registry_dir.exists(), "Capabilities registry directory should exist"
+        assert (registry_dir / "__init__.py").exists()
+    
+    def test_intelligence_capabilities_has_tests(self):
+        """Test that capabilities has tests."""
+        tests_dir = REPO_ROOT / "intelligence" / "capabilities" / "tests"
+        assert tests_dir.exists(), "Capabilities tests directory should exist"
+        
+        test_files = list(tests_dir.glob("test_*.py"))
+        assert len(test_files) > 0, "Capabilities should have test files"
 
 
 class TestIntelligencePurity:
