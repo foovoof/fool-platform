@@ -1016,6 +1016,217 @@ class TestIntelligencePurity:
             assert "import planning" not in content
 
 
+class TestConnectorsFoundation:
+    """Tests for Connectors Foundation."""
+    
+    def test_connectors_directory_exists(self):
+        """Test that connectors directory exists."""
+        connectors_dir = REPO_ROOT / "connectors"
+        assert connectors_dir.exists(), "Connectors directory should exist"
+    
+    def test_connectors_has_base_submodule(self):
+        """Test that connectors has base submodule."""
+        base_dir = REPO_ROOT / "connectors" / "base"
+        assert base_dir.exists(), "Base directory should exist"
+        assert (base_dir / "__init__.py").exists()
+    
+    def test_connectors_has_file_submodule(self):
+        """Test that connectors has file submodule."""
+        file_dir = REPO_ROOT / "connectors" / "file"
+        assert file_dir.exists(), "File directory should exist"
+    
+    def test_connectors_has_formats_submodule(self):
+        """Test that connectors has formats submodule."""
+        formats_dir = REPO_ROOT / "connectors" / "formats"
+        assert formats_dir.exists(), "Formats directory should exist"
+    
+    def test_connectors_has_http_submodule(self):
+        """Test that connectors has http submodule."""
+        http_dir = REPO_ROOT / "connectors" / "http"
+        assert http_dir.exists(), "HTTP directory should exist"
+    
+    def test_connectors_has_registry_submodule(self):
+        """Test that connectors has registry submodule."""
+        registry_dir = REPO_ROOT / "connectors" / "registry"
+        assert registry_dir.exists(), "Registry directory should exist"
+        assert (registry_dir / "__init__.py").exists()
+    
+    def test_connectors_has_base_connector(self):
+        """Test that base has connector.py."""
+        connector_file = REPO_ROOT / "connectors" / "base" / "connector.py"
+        assert connector_file.exists(), "Connector file should exist"
+    
+    def test_connectors_has_base_runtime(self):
+        """Test that base has runtime.py."""
+        runtime_file = REPO_ROOT / "connectors" / "base" / "runtime.py"
+        assert runtime_file.exists(), "Runtime file should exist"
+    
+    def test_connectors_has_base_lifecycle(self):
+        """Test that base has lifecycle.py."""
+        lifecycle_file = REPO_ROOT / "connectors" / "base" / "lifecycle.py"
+        assert lifecycle_file.exists(), "Lifecycle file should exist"
+    
+    def test_connectors_has_base_policies(self):
+        """Test that base has policies.py."""
+        policies_file = REPO_ROOT / "connectors" / "base" / "policies.py"
+        assert policies_file.exists(), "Policies file should exist"
+    
+    def test_connectors_has_base_events(self):
+        """Test that base has events.py."""
+        events_file = REPO_ROOT / "connectors" / "base" / "events.py"
+        assert events_file.exists(), "Events file should exist"
+    
+    def test_connectors_has_base_validation(self):
+        """Test that base has validation.py."""
+        validation_file = REPO_ROOT / "connectors" / "base" / "validation.py"
+        assert validation_file.exists(), "Validation file should exist"
+    
+    def test_connectors_has_base_exceptions(self):
+        """Test that base has exceptions.py."""
+        exceptions_file = REPO_ROOT / "connectors" / "base" / "exceptions.py"
+        assert exceptions_file.exists(), "Exceptions file should exist"
+    
+    def test_connectors_has_base_models(self):
+        """Test that base has models.py."""
+        models_file = REPO_ROOT / "connectors" / "base" / "models.py"
+        assert models_file.exists(), "Models file should exist"
+    
+    def test_connectors_has_file_connector(self):
+        """Test that file has file_connector.py."""
+        file_connector = REPO_ROOT / "connectors" / "file" / "file_connector.py"
+        assert file_connector.exists()
+    
+    def test_connectors_has_directory_connector(self):
+        """Test that file has directory_connector.py."""
+        dir_connector = REPO_ROOT / "connectors" / "file" / "directory_connector.py"
+        assert dir_connector.exists()
+    
+    def test_connectors_has_zip_connector(self):
+        """Test that file has zip_connector.py."""
+        zip_connector = REPO_ROOT / "connectors" / "file" / "zip_connector.py"
+        assert zip_connector.exists()
+    
+    def test_connectors_has_tar_connector(self):
+        """Test that file has tar_connector.py."""
+        tar_connector = REPO_ROOT / "connectors" / "file" / "tar_connector.py"
+        assert tar_connector.exists()
+    
+    def test_connectors_has_json_connector(self):
+        """Test that formats has json_connector.py."""
+        json_connector = REPO_ROOT / "connectors" / "formats" / "json_connector.py"
+        assert json_connector.exists()
+    
+    def test_connectors_has_csv_connector(self):
+        """Test that formats has csv_connector.py."""
+        csv_connector = REPO_ROOT / "connectors" / "formats" / "csv_connector.py"
+        assert csv_connector.exists()
+    
+    def test_connectors_has_text_connector(self):
+        """Test that formats has text_connector.py."""
+        text_connector = REPO_ROOT / "connectors" / "formats" / "text_connector.py"
+        assert text_connector.exists()
+    
+    def test_connectors_has_binary_connector(self):
+        """Test that formats has binary_connector.py."""
+        binary_connector = REPO_ROOT / "connectors" / "formats" / "binary_connector.py"
+        assert binary_connector.exists()
+    
+    def test_connectors_has_http_connector(self):
+        """Test that http has http_connector.py."""
+        http_connector = REPO_ROOT / "connectors" / "http" / "http_connector.py"
+        assert http_connector.exists()
+    
+    def test_connectors_has_rest_connector(self):
+        """Test that http has rest_connector.py."""
+        rest_connector = REPO_ROOT / "connectors" / "http" / "rest_connector.py"
+        assert rest_connector.exists()
+    
+    def test_connectors_has_tests(self):
+        """Test that connectors has tests."""
+        tests_dir = REPO_ROOT / "connectors" / "base" / "tests"
+        assert tests_dir.exists(), "Tests directory should exist"
+        
+        test_files = list(tests_dir.glob("test_*.py"))
+        assert len(test_files) > 0, "Connectors should have test files"
+    
+    def test_connectors_has_readme(self):
+        """Test that connectors has README."""
+        readme = REPO_ROOT / "connectors" / "README.md"
+        assert readme.exists(), "README should exist"
+
+
+class TestConnectorsPurity:
+    """Tests for Connectors layer architecture purity."""
+    
+    def test_connectors_does_not_import_knowledge(self):
+        """Test that connectors does not import knowledge."""
+        connectors_dir = REPO_ROOT / "connectors"
+        
+        for py_file in connectors_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from knowledge" not in content
+            assert "import knowledge" not in content
+    
+    def test_connectors_does_not_import_inference(self):
+        """Test that connectors does not import inference."""
+        connectors_dir = REPO_ROOT / "connectors"
+        
+        for py_file in connectors_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from inference" not in content
+            assert "import inference" not in content
+    
+    def test_connectors_does_not_import_intelligence(self):
+        """Test that connectors does not import intelligence."""
+        connectors_dir = REPO_ROOT / "connectors"
+        
+        for py_file in connectors_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from intelligence" not in content
+            assert "import intelligence" not in content
+    
+    def test_connectors_does_not_import_cyber(self):
+        """Test that connectors does not import cyber."""
+        connectors_dir = REPO_ROOT / "connectors"
+        
+        for py_file in connectors_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from cyber" not in content
+            assert "import cyber" not in content
+    
+    def test_connectors_does_not_import_ai(self):
+        """Test that connectors does not import AI."""
+        connectors_dir = REPO_ROOT / "connectors"
+        
+        for py_file in connectors_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from openai" not in content
+            assert "import openai" not in content
+            assert "from anthropic" not in content
+            assert "import anthropic" not in content
+    
+    def test_connectors_does_not_import_applications(self):
+        """Test that connectors does not import applications."""
+        connectors_dir = REPO_ROOT / "connectors"
+        
+        for py_file in connectors_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from applications" not in content
+            assert "import applications" not in content
+
+
 class TestDomainIntelligencePurity:
     """Tests to ensure domain does not import intelligence."""
     
