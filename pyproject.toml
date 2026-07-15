@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fool-platform"
+version = "1.0.0"
+description = "FOOL Platform — Cognitive Operating System. Phase 2: Python-first platform kernel foundation."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "UNLICENSED"
+authors = [
+    { name = "FOOL Platform Team" }
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.0.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["platform"]
+
+[tool.pytest.ini_options]
+testpaths = ["platform/kernel/tests", "testing/architecture"]
+python_files = ["*.py", "*.test.py"]
