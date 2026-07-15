@@ -375,6 +375,156 @@ class TestDomainEventPurity:
             assert "import fool_platform.events" not in content
 
 
+class TestOrchestrationFoundation:
+    """Tests for Orchestration layer foundation."""
+    
+    def test_orchestration_directory_exists(self):
+        """Test that orchestration directory exists."""
+        orch_dir = REPO_ROOT / "fool_platform" / "orchestration"
+        assert orch_dir.exists(), "Orchestration directory should exist"
+    
+    def test_orchestration_has_required_modules(self):
+        """Test that orchestration has required modules."""
+        orch_dir = REPO_ROOT / "fool_platform" / "orchestration"
+        
+        required_modules = [
+            "orchestration_exceptions.py",
+            "models.py",
+            "execution_context.py",
+        ]
+        
+        for module in required_modules:
+            module_path = orch_dir / module
+            assert module_path.exists(), f"Module {module} should exist"
+    
+    def test_orchestration_has_registry_submodule(self):
+        """Test that orchestration has registry submodule."""
+        registry_dir = REPO_ROOT / "fool_platform" / "orchestration" / "registry"
+        assert registry_dir.exists(), "Registry directory should exist"
+        
+        required = ["agent_registry.py", "capability_registry.py", "workflow_registry.py", "policy_registry.py"]
+        for mod in required:
+            assert (registry_dir / mod).exists(), f"Registry module {mod} should exist"
+    
+    def test_orchestration_has_state_submodule(self):
+        """Test that orchestration has state submodule."""
+        state_dir = REPO_ROOT / "fool_platform" / "orchestration" / "state"
+        assert state_dir.exists(), "State directory should exist"
+        
+        required = ["workflow_state_store.py", "checkpoint.py", "state_transitions.py"]
+        for mod in required:
+            assert (state_dir / mod).exists(), f"State module {mod} should exist"
+    
+    def test_orchestration_has_policies_submodule(self):
+        """Test that orchestration has policies submodule."""
+        policies_dir = REPO_ROOT / "fool_platform" / "orchestration" / "policies"
+        assert policies_dir.exists(), "Policies directory should exist"
+        
+        required = ["retry_policy.py", "timeout_policy.py", "failure_policy.py", "termination_policy.py"]
+        for mod in required:
+            assert (policies_dir / mod).exists(), f"Policy module {mod} should exist"
+    
+    def test_orchestration_has_planner_submodule(self):
+        """Test that orchestration has planner submodule."""
+        planner_dir = REPO_ROOT / "fool_platform" / "orchestration" / "planner"
+        assert planner_dir.exists(), "Planner directory should exist"
+        
+        required = ["workflow_planner.py", "agent_selector.py"]
+        for mod in required:
+            assert (planner_dir / mod).exists(), f"Planner module {mod} should exist"
+    
+    def test_orchestration_has_engine_submodule(self):
+        """Test that orchestration has engine submodule."""
+        engine_dir = REPO_ROOT / "fool_platform" / "orchestration" / "engine"
+        assert engine_dir.exists(), "Engine directory should exist"
+        
+        required = ["workflow_engine.py", "step_runner.py", "transition_evaluator.py"]
+        for mod in required:
+            assert (engine_dir / mod).exists(), f"Engine module {mod} should exist"
+    
+    def test_orchestration_has_tests(self):
+        """Test that orchestration has tests."""
+        tests_dir = REPO_ROOT / "fool_platform" / "orchestration" / "tests"
+        assert tests_dir.exists(), "Tests directory should exist"
+        
+        test_files = list(tests_dir.glob("test_*.py"))
+        assert len(test_files) > 0, "Orchestration should have test files"
+
+
+class TestOrchestrationPurity:
+    """Tests for Orchestration architecture purity."""
+    
+    def test_orchestration_does_not_import_ai(self):
+        """Test that orchestration does not import ai."""
+        orch_dir = REPO_ROOT / "fool_platform" / "orchestration"
+        
+        for py_file in orch_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from ai" not in content
+            assert "import ai" not in content
+    
+    def test_orchestration_does_not_import_apps(self):
+        """Test that orchestration does not import apps."""
+        orch_dir = REPO_ROOT / "fool_platform" / "orchestration"
+        
+        for py_file in orch_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from apps" not in content
+            assert "import apps" not in content
+    
+    def test_orchestration_does_not_import_infrastructure(self):
+        """Test that orchestration does not import infrastructure."""
+        orch_dir = REPO_ROOT / "fool_platform" / "orchestration"
+        
+        for py_file in orch_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from infrastructure" not in content
+            assert "import infrastructure" not in content
+    
+    def test_orchestration_does_not_import_connectors(self):
+        """Test that orchestration does not import connectors."""
+        orch_dir = REPO_ROOT / "fool_platform" / "orchestration"
+        
+        for py_file in orch_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from connectors" not in content
+            assert "import connectors" not in content
+    
+    def test_orchestration_does_not_import_intelligence(self):
+        """Test that orchestration does not import intelligence."""
+        orch_dir = REPO_ROOT / "fool_platform" / "orchestration"
+        
+        for py_file in orch_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from intelligence" not in content
+            assert "import intelligence" not in content
+
+
+class TestDomainOrchestrationPurity:
+    """Tests to ensure domain does not import orchestration."""
+    
+    def test_domain_does_not_import_orchestration(self):
+        """Test that domain does not import platform orchestration."""
+        domain_dir = REPO_ROOT / "domain"
+        
+        for py_file in domain_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from fool_platform.orchestration" not in content
+            assert "import fool_platform.orchestration" not in content
+
+
 class TestNoPlaceholderCode:
     """Tests to verify no placeholder code exists."""
     
