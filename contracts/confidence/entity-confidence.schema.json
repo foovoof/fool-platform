@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/confidence/entity-confidence.schema.json",
+  "title": "EntityConfidence",
+  "description": "A confidence assessment scoped to a single Entity object, capturing how strongly the entity's existence and attributes are trusted. Referenced by contracts/domain/entity.schema.json#/properties/confidence.",
+  "type": "object",
+  "required": ["score", "level", "method", "assessed_at", "entity_ref"],
+  "properties": {
+    "score": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceScore" },
+    "level": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceLevel" },
+    "rationale": { "type": "string" },
+    "method": { "type": "string" },
+    "assessed_by": { "type": "string" },
+    "assessed_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "evidence_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "source_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "entity_ref": { "$ref": "../common/common-defs.schema.json#/$defs/reference" },
+    "attribute_confidence": {
+      "type": "object",
+      "description": "Optional per-attribute confidence scores for the entity's attributes map.",
+      "additionalProperties": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceScore" }
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "score": 0.7,
+      "level": "moderate",
+      "method": "entity_resolution",
+      "assessed_at": "2026-07-15T09:00:00Z",
+      "evidence_refs": [],
+      "source_refs": [],
+      "entity_ref": { "ref_id": "1a2b3c4d-5e6f-4a1b-8c9d-0e1f2a3b4c5d", "ref_type": "entity" },
+      "attribute_confidence": { "nationality": 0.3 }
+    }
+  ]
+}

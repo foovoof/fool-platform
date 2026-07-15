@@ -1,0 +1,22 @@
+concept: Source
+description: >
+  An originating channel from which Evidence is collected: a public registry,
+  search engine, social platform, leaked dataset, sensor feed, human tip
+  line, or internal system. A Source carries an independent reliability
+  assessment.
+purpose: >
+  Separates "how trustworthy is this channel in general" from "how
+  trustworthy is this specific piece of evidence," so that reliability can be
+  reasoned about at the channel level and reused across many Evidence items.
+examples:
+  - A "public_registry" Source: a national business registry with a
+    very_high reliability assessment based on institutional authority.
+  - A "leaked_dataset" Source with a low reliability assessment pending
+    independent corroboration.
+related_concepts:
+  - Evidence
+  - SourceReliability (see contracts/confidence/source-reliability.schema.json)
+forbidden_confusions:
+  - A Source's reliability score is not the same as any individual Evidence
+    item's confidence; they are assessed independently and combined, not
+    substituted for one another.

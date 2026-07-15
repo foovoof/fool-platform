@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/domain/identity.schema.json",
+  "title": "Identity",
+  "description": "Identity is the central aggregation point of the FOOL Platform domain model. Every identifier, entity, evidence item, and finding either references an Identity directly or reaches one transitively. Identity is never optional in the platform's reasoning: it is the anchor around which observable identifiers are resolved into a single subject of interest.",
+  "type": "object",
+  "required": ["id", "version", "created_at", "updated_at", "status", "identifiers"],
+  "properties": {
+    "id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "version": { "$ref": "../common/common-defs.schema.json#/$defs/semanticVersion" },
+    "created_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "updated_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "status": { "$ref": "../common/common-defs.schema.json#/$defs/status" },
+    "classification": { "$ref": "../common/common-defs.schema.json#/$defs/classificationLevel" },
+    "display_label": {
+      "type": "string",
+      "description": "Human-readable label for the identity, derived from resolved identifiers. Not authoritative."
+    },
+    "identifiers": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The observable identifiers (email, phone, username, IP, wallet address, document hash, etc.) resolved to belong to this identity.",
+      "items": {
+        "type": "object",
+        "required": ["identifier_type", "value", "confidence"],
+        "properties": {
+          "identifier_type": {
+            "type": "string",
+            "enum": ["email", "phone", "username", "domain", "ip_address", "hash", "wallet_address", "document", "image", "person_name", "other"]
+          },
+          "value": { "type": "string", "minLength": 1 },
+          "confidence": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceRef" },
+          "source_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "entity_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "evidence_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "confidence": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceRef" },
+    "provenance": { "$ref": "../common/common-defs.schema.json#/$defs/provenance" },
+    "tags": { "$ref": "../common/common-defs.schema.json#/$defs/tags" },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "id": "b7e2b3d0-5c3f-4a9e-9b8b-2e7f1a6c9d10",
+      "version": "1.0.0",
+      "created_at": "2026-07-15T09:00:00Z",
+      "updated_at": "2026-07-15T09:00:00Z",
+      "status": "active",
+      "classification": "internal",
+      "display_label": "Identity-4471",
+      "identifiers": [
+        {
+          "identifier_type": "email",
+          "value": "j.doe@example.com",
+          "confidence": {
+            "score": 0.92,
+            "level": "high",
+            "method": "manual_review",
+            "assessed_at": "2026-07-15T09:00:00Z"
+          },
+          "source_refs": [{ "ref_id": "0c9b6f2a-4e6a-4a1a-9a8a-8f6c2b1d3e44", "ref_type": "source" }]
+        }
+      ],
+      "entity_refs": [{ "ref_id": "1a2b3c4d-5e6f-4a1b-8c9d-0e1f2a3b4c5d", "ref_type": "entity" }],
+      "evidence_refs": [],
+      "confidence": {
+        "score": 0.85,
+        "level": "high",
+        "method": "identifier_resolution",
+        "assessed_at": "2026-07-15T09:00:00Z"
+      },
+      "provenance": {
+        "origin": "investigation-workflow",
+        "recorded_at": "2026-07-15T09:00:00Z",
+        "lineage": ["identity_resolution_agent"]
+      },
+      "tags": ["priority"],
+      "metadata": {}
+    }
+  ]
+}

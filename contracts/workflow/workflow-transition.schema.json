@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/workflow/workflow-transition.schema.json",
+  "title": "WorkflowTransition",
+  "description": "A declarative edge between two WorkflowSteps, optionally guarded by a condition. Transitions define the graph shape of a workflow; they contain no executable logic.",
+  "type": "object",
+  "required": ["from_step_id", "to_step_id"],
+  "properties": {
+    "from_step_id": { "type": "string", "minLength": 1 },
+    "to_step_id": { "type": "string", "minLength": 1 },
+    "condition": {
+      "type": "string",
+      "description": "Optional human-readable declarative guard expression, e.g. 'outputs.candidate_sources.length > 0'."
+    },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    { "from_step_id": "enumerate-sources", "to_step_id": "extract-evidence", "condition": "outputs.candidate_sources.length > 0" }
+  ]
+}

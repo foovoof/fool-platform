@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/agent/agent-capability.schema.json",
+  "title": "AgentCapability",
+  "description": "A declared capability an agent can advertise (e.g. entity_resolution, ocr). Capabilities are the unit of matching between AgentTask.required_capabilities and an agent's registered capabilities in platform/agents/registry/capabilities.yaml.",
+  "type": "object",
+  "required": ["capability_id", "name", "description"],
+  "properties": {
+    "capability_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "Canonical snake_case capability identifier, unique across the platform."
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "input_schema_ref": {
+      "type": "string",
+      "format": "uri-reference",
+      "description": "Reference to the JSON Schema describing valid inputs for this capability, if any."
+    },
+    "output_schema_ref": {
+      "type": "string",
+      "format": "uri-reference",
+      "description": "Reference to the JSON Schema describing valid outputs for this capability, if any."
+    },
+    "version": { "$ref": "../common/common-defs.schema.json#/$defs/semanticVersion" },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "capability_id": "entity_resolution",
+      "name": "Entity Resolution",
+      "description": "Resolves observed attributes to canonical Entity records.",
+      "version": "1.0.0",
+      "metadata": {}
+    }
+  ]
+}

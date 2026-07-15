@@ -1,0 +1,23 @@
+concept: Investigation
+description: >
+  A bounded unit of analytical work within a Case, pursuing a specific
+  stated objective (e.g. resolving an identity, mapping a network, verifying
+  a claim). Investigations aggregate the Identities, Entities, Evidence, and
+  Findings produced while working toward that objective.
+purpose: >
+  Scopes analytical work to a concrete, falsifiable objective so that
+  progress and confidence can be assessed against something specific rather
+  than the open-ended Case as a whole.
+examples:
+  - An Investigation with objective "Confirm whether the reported email and
+    phone number resolve to the same natural person," scoped to one Case.
+related_concepts:
+  - Case
+  - Finding
+  - WorkflowExecution
+forbidden_confusions:
+  - An Investigation is not a Case. A Case is the top-level administrative
+    container that may hold many Investigations; an Investigation is scoped
+    to one specific objective within that Case.
+  - An Investigation must never be created without a non-empty `objective` —
+    an Investigation with no stated objective is not a valid Investigation.

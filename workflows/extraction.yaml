@@ -1,0 +1,55 @@
+# workflows/extraction.yaml
+#
+# WorkflowDefinition: wf.extraction.v1
+#
+# Declarative description only — no runtime executor lives in this file or
+# this repository yet.
+
+workflow_id: wf.extraction.v1
+name: Extraction Workflow
+version: 1.0.0
+description: >
+  Collects structured Evidence from a single, already-identified Source and
+  normalizes it into an Evidence-shaped record with a recorded content
+  hash and an opened ChainOfCustody.
+
+required_agents: [extraction]
+required_capabilities: [extraction]
+
+steps:
+  - step_id: collect_from_source
+    name: Collect evidence from source
+    agent_type: extraction
+    capability: extraction
+    input_schema_ref: contracts/domain/source.schema.json
+    output_schema_ref: contracts/domain/evidence.schema.json
+    retry_policy:
+      max_attempts: 3
+      backoff_seconds: 10
+    timeout_policy:
+      duration_seconds: 180
+
+  - step_id: open_chain_of_custody
+    name: Open chain of custody
+    agent_type: extraction
+    capability: extraction
+    input_schema_ref: contracts/domain/evidence.schema.json
+    output_schema_ref: contracts/domain/evidence.schema.json
+    retry_policy:
+      max_attempts: 2
+      backoff_seconds: 5
+    timeout_policy:
+      duration_seconds: 30
+
+transitions:
+  - from_step: collect_from_source
+    to_step: open_chain_of_custody
+    condition: step_completed
+
+failure_policy:
+  on_failure: escalate_to_human
+  escalation_target: case.owner
+
+termination_conditions:
+  - condition_type: step_completed
+    step_id: open_chain_of_custody

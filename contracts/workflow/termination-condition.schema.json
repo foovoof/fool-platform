@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/workflow/termination-condition.schema.json",
+  "title": "TerminationCondition",
+  "description": "A declarative condition that, once satisfied, ends a WorkflowExecution as complete, failed, or cancelled. Purely declarative; no expression evaluator is implemented in this phase.",
+  "type": "object",
+  "required": ["condition_id", "expression", "resulting_state"],
+  "properties": {
+    "condition_id": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "expression": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable declarative expression, e.g. 'all_steps_completed' or 'confidence.score >= 0.9'."
+    },
+    "resulting_state": {
+      "type": "string",
+      "enum": ["completed", "failed", "cancelled"]
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    { "condition_id": "all-steps-completed", "expression": "all_steps_completed", "resulting_state": "completed" }
+  ]
+}

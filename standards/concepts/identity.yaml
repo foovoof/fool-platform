@@ -1,0 +1,27 @@
+concept: Identity
+description: >
+  The central aggregation point of the FOOL Platform domain model. An Identity
+  resolves a set of observable identifiers (email, phone, username, IP address,
+  wallet address, document hash, person name, etc.) into a single subject of
+  interest. Identity is never optional: every Entity, Evidence item, and
+  Finding must reference an Identity directly or reach one transitively.
+purpose: >
+  Gives the platform one canonical anchor to reason about "who/what is this
+  about" independent of which individual identifier surfaced it, enabling
+  identifier-level evidence to be merged into a single coherent subject.
+examples:
+  - An Identity aggregating an email address and a phone number that three
+    independent public sources link to the same natural person.
+  - An Identity representing an anonymous online account, aggregating only a
+    username and a set of associated IP addresses, with no person_name yet
+    resolved.
+related_concepts:
+  - Entity
+  - Evidence
+  - Source
+forbidden_confusions:
+  - Identity is not an Entity. An Entity is a typed graph node (person,
+    organization, device, ...); an Identity is the aggregation of identifiers
+    that may point to one or more such Entities.
+  - Identity is not a user account of the FOOL Platform itself. It refers to
+    the subject of investigation, never to a platform operator.

@@ -1,0 +1,39 @@
+# workflows/monitoring.yaml
+#
+# WorkflowDefinition: wf.monitoring.v1
+#
+# Declarative description only — no runtime executor lives in this file or
+# this repository yet.
+
+workflow_id: wf.monitoring.v1
+name: Monitoring Workflow
+version: 1.0.0
+description: >
+  Re-runs a bounded check against previously-recorded Identities or
+  Entities on a schedule and emits an AgentEvent when a material change is
+  detected. Does not create Findings directly; a detected change is routed
+  back through the investigation workflow for human-accountable synthesis.
+
+required_agents: [monitoring]
+required_capabilities: [monitoring]
+
+steps:
+  - step_id: recheck_subject
+    name: Recheck monitored subject
+    agent_type: monitoring
+    capability: monitoring
+    input_schema_ref: contracts/domain/identity.schema.json
+    output_schema_ref: contracts/agent/agent-event.schema.json
+    retry_policy:
+      max_attempts: 5
+      backoff_seconds: 30
+    timeout_policy:
+      duration_seconds: 90
+
+transitions: []
+
+failure_policy:
+  on_failure: retry_with_backoff
+
+termination_conditions:
+  - condition_type: schedule_elapsed

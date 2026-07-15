@@ -1,0 +1,42 @@
+# workflows/research.yaml
+#
+# WorkflowDefinition: wf.research.v1
+#
+# Declarative description only — no runtime executor lives in this file or
+# this repository yet. Execution engines are a Phase 2 concern that will
+# consume this definition; this file must remain valid standalone data.
+
+workflow_id: wf.research.v1
+name: Research Workflow
+version: 1.0.0
+description: >
+  Enumerates and ranks candidate public sources relevant to a stated query
+  or subject, without collecting evidence from any of them. Produces a
+  ranked list of Source candidates for a human or a downstream extraction
+  workflow to select from.
+
+required_agents: [research]
+required_capabilities: [research]
+
+steps:
+  - step_id: enumerate_candidate_sources
+    name: Enumerate candidate sources
+    agent_type: research
+    capability: research
+    input_schema_ref: contracts/agent/agent-task.schema.json
+    output_schema_ref: contracts/agent/agent-result.schema.json
+    retry_policy:
+      max_attempts: 3
+      backoff_seconds: 5
+    timeout_policy:
+      duration_seconds: 120
+
+transitions: []
+
+failure_policy:
+  on_failure: escalate_to_human
+  escalation_target: case.owner
+
+termination_conditions:
+  - condition_type: step_completed
+    step_id: enumerate_candidate_sources

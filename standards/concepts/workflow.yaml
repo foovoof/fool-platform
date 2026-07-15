@@ -1,0 +1,24 @@
+concept: Workflow
+description: >
+  A declarative description (WorkflowDefinition) of a sequence of steps,
+  transitions, and policies used to carry out a class of investigative work
+  (research, extraction, discovery, investigation, reporting, monitoring). A
+  WorkflowExecution is a single declared invocation of a WorkflowDefinition.
+purpose: >
+  Encodes "how work gets done" declaratively and independently of any
+  runtime executor, per the Workflow-Driven Execution principle — behavior
+  is described by data (YAML/JSON), not hardcoded into agent logic.
+examples:
+  - The `wf.research.v1` WorkflowDefinition, whose single step enumerates
+    candidate public sources for a given query.
+related_concepts:
+  - AgentTask
+  - WorkflowExecution
+  - WorkflowState
+forbidden_confusions:
+  - A WorkflowDefinition is not a WorkflowExecution. The definition is the
+    reusable, versioned template; an execution is one run of that template
+    against a specific Case/Investigation.
+  - A Workflow is not an Agent. A Workflow declares which agent_type/
+    capabilities a step requires; it never contains agent implementation
+    logic itself.

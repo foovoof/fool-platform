@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/agent/agent-context.schema.json",
+  "title": "AgentExecutionContext",
+  "description": "The bounded execution context an agent runs within: which case/investigation/workflow it belongs to, its trace lineage, and the classification ceiling it must respect. Referenced by AgentTask and AgentResult; defines no runtime behavior in this phase.",
+  "type": "object",
+  "required": ["case_id", "trace_id"],
+  "properties": {
+    "case_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "investigation_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "workflow_id": { "$ref": "../common/common-defs.schema.json#/$defs/dottedIdentifier" },
+    "workflow_execution_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "trace_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "parent_task_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "classification_ceiling": { "$ref": "../common/common-defs.schema.json#/$defs/classificationLevel" },
+    "initiated_by": { "type": "string", "minLength": 1 },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "case_id": "5e6f7a8b-9c0d-4e1f-9a0b-1c2d3e4f5a6b",
+      "investigation_id": "6f7a8b9c-0d1e-4f2a-9b0c-1d2e3f4a5b6c",
+      "workflow_id": "wf.research.v1",
+      "workflow_execution_id": "a1b2c3d4-e5f6-4a1b-8c9d-0e1f2a3b4c5d",
+      "trace_id": "9c0d1e2f-3a4b-4c5d-9e0f-1a2b3c4d5e6f",
+      "classification_ceiling": "confidential",
+      "initiated_by": "analyst.lead@fool-platform.dev",
+      "metadata": {}
+    }
+  ]
+}

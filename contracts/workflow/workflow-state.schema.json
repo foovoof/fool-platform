@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/workflow/workflow-state.schema.json",
+  "title": "WorkflowState",
+  "description": "The current declared state of a WorkflowExecution: which steps have completed, which are pending, and accumulated step outputs. A snapshot-shaped contract; no state-machine runtime is implemented in this phase.",
+  "type": "object",
+  "required": ["workflow_execution_id", "current_step_id", "step_states", "updated_at"],
+  "properties": {
+    "workflow_execution_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "current_step_id": { "type": "string" },
+    "step_states": {
+      "type": "object",
+      "description": "Map of step_id to its lifecycle status.",
+      "additionalProperties": {
+        "type": "string",
+        "enum": ["pending", "in_progress", "completed", "failed", "skipped"]
+      }
+    },
+    "accumulated_outputs": {
+      "type": "object",
+      "description": "Named outputs accumulated so far across completed steps.",
+      "additionalProperties": true
+    },
+    "updated_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "workflow_execution_id": "a1b2c3d4-e5f6-4a1b-8c9d-0e1f2a3b4c5d",
+      "current_step_id": "enumerate-sources",
+      "step_states": { "enumerate-sources": "in_progress" },
+      "accumulated_outputs": {},
+      "updated_at": "2026-07-15T09:05:00Z",
+      "metadata": {}
+    }
+  ]
+}

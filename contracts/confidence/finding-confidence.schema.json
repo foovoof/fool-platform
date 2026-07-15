@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/confidence/finding-confidence.schema.json",
+  "title": "FindingConfidence",
+  "description": "A confidence assessment scoped to a single Finding, aggregating the confidence of the evidence, entities, and relationships that support it. Findings are conclusions and therefore demand an explicit method and rationale, never a bare score.",
+  "type": "object",
+  "required": ["score", "level", "method", "assessed_at", "finding_ref", "rationale"],
+  "properties": {
+    "score": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceScore" },
+    "level": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceLevel" },
+    "rationale": { "type": "string", "minLength": 1 },
+    "method": { "type": "string" },
+    "assessed_by": { "type": "string" },
+    "assessed_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "evidence_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "source_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "finding_ref": { "$ref": "../common/common-defs.schema.json#/$defs/reference" },
+    "contributing_confidence_refs": {
+      "$ref": "../common/common-defs.schema.json#/$defs/referenceList",
+      "description": "References to the EntityConfidence/RelationshipConfidence/EvidenceConfidence records aggregated into this assessment."
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "score": 0.75,
+      "level": "high",
+      "rationale": "Corroborated by two independent registry extracts and one social-platform cross-reference.",
+      "method": "analyst_synthesis",
+      "assessed_at": "2026-07-15T09:30:00Z",
+      "evidence_refs": [],
+      "source_refs": [],
+      "finding_ref": { "ref_id": "8c9d0e1f-2a3b-4c4d-9e0f-1a2b3c4d5e6f", "ref_type": "finding" },
+      "contributing_confidence_refs": []
+    }
+  ]
+}

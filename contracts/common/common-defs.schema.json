@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/common/common-defs.schema.json",
+  "title": "Common Definitions",
+  "description": "Canonical, reusable JSON Schema $defs shared across every FOOL Platform contract (domain, agent, workflow, confidence). Every other schema in this repository MUST reference these definitions instead of redefining identifiers, timestamps, metadata, confidence, references, tags, or version fields.",
+  "type": "object",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Canonical unique identifier for any platform object. Always a UUID (v4 or v7)."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timezone-aware ISO 8601 timestamp (RFC 3339). Naive/local timestamps are forbidden."
+    },
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version string, e.g. 1.0.0.",
+      "examples": ["1.0.0"]
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true,
+      "description": "Free-form, de-duplicated classification labels attached to an object."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Open key/value bag for non-canonical, extension-owned attributes. Canonical fields must never be smuggled into metadata.",
+      "additionalProperties": true
+    },
+    "reference": {
+      "type": "object",
+      "description": "A pointer from one platform object to another by id and type, optionally scoped to a schema version.",
+      "required": ["ref_id", "ref_type"],
+      "properties": {
+        "ref_id": { "$ref": "#/$defs/id" },
+        "ref_type": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical concept name of the referenced object, e.g. 'identity', 'evidence', 'source'."
+        },
+        "ref_version": { "$ref": "#/$defs/semanticVersion" }
+      },
+      "additionalProperties": false
+    },
+    "referenceList": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/reference" },
+      "uniqueItems": true
+    },
+    "confidenceScore": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Normalized confidence score, where 0 means no confidence and 1 means certainty."
+    },
+    "confidenceLevel": {
+      "type": "string",
+      "enum": ["very_low", "low", "moderate", "high", "very_high"],
+      "description": "Human-interpretable bucket derived from a confidence score."
+    },
+    "confidenceRef": {
+      "type": "object",
+      "description": "Embedded confidence assessment attached to any information-bearing object, per the Confidence Everywhere principle.",
+      "required": ["score", "level", "method", "assessed_at"],
+      "properties": {
+        "score": { "$ref": "#/$defs/confidenceScore" },
+        "level": { "$ref": "#/$defs/confidenceLevel" },
+        "rationale": { "type": "string" },
+        "method": { "type": "string", "minLength": 1 },
+        "assessed_by": { "type": "string" },
+        "assessed_at": { "$ref": "#/$defs/timestamp" },
+        "evidence_refs": { "$ref": "#/$defs/referenceList" },
+        "source_refs": { "$ref": "#/$defs/referenceList" }
+      },
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "description": "Origin, lineage, and custody trail attached to any information-bearing object, per the Provenance Everywhere principle. No object in the platform model may be anonymous.",
+      "required": ["origin", "recorded_at"],
+      "properties": {
+        "origin": { "type": "string", "minLength": 1, "description": "The originating actor, system, or process." },
+        "recorded_at": { "$ref": "#/$defs/timestamp" },
+        "lineage": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ordered list of transformation/handling steps the information passed through."
+        },
+        "custody_refs": { "$ref": "#/$defs/referenceList" },
+        "source_refs": { "$ref": "#/$defs/referenceList" }
+      },
+      "additionalProperties": false
+    },
+    "classificationLevel": {
+      "type": "string",
+      "enum": ["public", "internal", "restricted", "confidential"],
+      "description": "Sensitivity classification of an object, governing handling and disclosure rules."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "active", "under_review", "archived", "retracted"],
+      "description": "Canonical lifecycle status shared by case/investigation/report style objects."
+    },
+    "dottedIdentifier": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.]*$",
+      "description": "A stable, human-readable, dotted/namespaced identifier used for registry-declared concepts (agent ids, workflow ids) that must remain the same across every run rather than being freshly generated per instance, unlike #/$defs/id."
+    }
+  }
+}

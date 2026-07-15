@@ -1,0 +1,24 @@
+concept: Evidence
+description: >
+  A discrete, provenance-bearing artifact (document, screenshot, dataset
+  record, message, transaction, media file, log entry) collected from a
+  single Source in support of an Identity, Entity, Relationship, or Finding.
+  Evidence is the atomic unit of proof in the platform.
+purpose: >
+  Ensures no assertion in the platform is ever anonymous: every claim must
+  trace back to at least one Evidence or Source reference, satisfying the
+  Provenance Everywhere principle.
+examples:
+  - A "document" Evidence item: a public business registry PDF extract, with
+    a recorded content_hash and chain_of_custody_refs.
+  - A "screenshot" Evidence item captured from a social platform profile page.
+related_concepts:
+  - Source
+  - ChainOfCustody
+  - Finding
+forbidden_confusions:
+  - Evidence is not the Source it came from. Evidence references exactly one
+    Source via source_ref; the Source's own reliability is assessed
+    independently (see standards/concepts/source.yaml).
+  - Evidence is not a Finding. Evidence is raw supporting material; a Finding
+    is the analytical conclusion drawn from one or more Evidence items.

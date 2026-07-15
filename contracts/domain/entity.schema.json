@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/domain/entity.schema.json",
+  "title": "Entity",
+  "description": "An Entity is a concrete observable object in the world (a person, organization, device, account, location, or asset) that participates in relationships and carries evidence. Entities are distinct from Identity: an Identity aggregates identifiers that resolve to a subject, while an Entity is a typed node in the knowledge graph that an Identity may point to.",
+  "type": "object",
+  "required": ["id", "version", "created_at", "updated_at", "status", "entity_type"],
+  "properties": {
+    "id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "version": { "$ref": "../common/common-defs.schema.json#/$defs/semanticVersion" },
+    "created_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "updated_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "status": { "$ref": "../common/common-defs.schema.json#/$defs/status" },
+    "classification": { "$ref": "../common/common-defs.schema.json#/$defs/classificationLevel" },
+    "entity_type": {
+      "type": "string",
+      "enum": ["person", "organization", "device", "account", "location", "asset", "document", "other"]
+    },
+    "name": { "type": "string" },
+    "identity_ref": { "$ref": "../common/common-defs.schema.json#/$defs/reference" },
+    "attributes": {
+      "type": "object",
+      "description": "Typed, entity_type-specific attributes (e.g. registered_country for an organization).",
+      "additionalProperties": true
+    },
+    "relationship_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "evidence_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "source_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "confidence": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceRef" },
+    "provenance": { "$ref": "../common/common-defs.schema.json#/$defs/provenance" },
+    "tags": { "$ref": "../common/common-defs.schema.json#/$defs/tags" },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "id": "1a2b3c4d-5e6f-4a1b-8c9d-0e1f2a3b4c5d",
+      "version": "1.0.0",
+      "created_at": "2026-07-15T09:00:00Z",
+      "updated_at": "2026-07-15T09:00:00Z",
+      "status": "active",
+      "classification": "internal",
+      "entity_type": "person",
+      "name": "J. Doe",
+      "identity_ref": { "ref_id": "b7e2b3d0-5c3f-4a9e-9b8b-2e7f1a6c9d10", "ref_type": "identity" },
+      "attributes": { "nationality": "unknown" },
+      "relationship_refs": [],
+      "evidence_refs": [],
+      "source_refs": [],
+      "confidence": {
+        "score": 0.7,
+        "level": "moderate",
+        "method": "entity_resolution",
+        "assessed_at": "2026-07-15T09:00:00Z"
+      },
+      "provenance": {
+        "origin": "extraction-agent",
+        "recorded_at": "2026-07-15T09:00:00Z"
+      },
+      "tags": [],
+      "metadata": {}
+    }
+  ]
+}

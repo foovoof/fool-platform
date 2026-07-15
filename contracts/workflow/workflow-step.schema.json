@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/workflow/workflow-step.schema.json",
+  "title": "WorkflowStep",
+  "description": "A single declarative unit of work within a WorkflowDefinition. A step names the required agent capabilities and its own policies; it never contains executable logic.",
+  "type": "object",
+  "required": ["step_id", "name", "required_capabilities"],
+  "properties": {
+    "step_id": { "type": "string", "minLength": 1, "pattern": "^[a-z][a-z0-9-]*$" },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "required_capabilities": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "required_agent_type": {
+      "type": "string",
+      "enum": ["research", "extraction", "discovery", "investigation", "reporting", "tracking", "review"]
+    },
+    "inputs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Named inputs this step consumes, referencing prior step outputs or workflow inputs."
+    },
+    "outputs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Named outputs this step produces for downstream steps."
+    },
+    "retry_policy_ref": { "type": "string" },
+    "timeout_policy_ref": { "type": "string" },
+    "human_review_required": { "type": "boolean" },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "step_id": "enumerate-sources",
+      "name": "Enumerate candidate sources",
+      "required_capabilities": ["research"],
+      "required_agent_type": "research",
+      "inputs": ["query"],
+      "outputs": ["candidate_sources"],
+      "human_review_required": false,
+      "metadata": {}
+    }
+  ]
+}

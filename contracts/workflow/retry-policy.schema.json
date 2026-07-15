@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/workflow/retry-policy.schema.json",
+  "title": "RetryPolicy",
+  "description": "Declarative retry behavior attached to a WorkflowDefinition or an individual WorkflowStep. Defines retry limits only; no runtime retry executor is implemented in this phase.",
+  "type": "object",
+  "required": ["max_attempts", "backoff_strategy"],
+  "properties": {
+    "max_attempts": { "type": "integer", "minimum": 1 },
+    "backoff_strategy": {
+      "type": "string",
+      "enum": ["fixed", "linear", "exponential"]
+    },
+    "initial_delay_seconds": { "type": "number", "minimum": 0 },
+    "max_delay_seconds": { "type": "number", "minimum": 0 },
+    "retryable_error_codes": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "max_attempts": 3,
+      "backoff_strategy": "exponential",
+      "initial_delay_seconds": 5,
+      "max_delay_seconds": 60,
+      "retryable_error_codes": ["timeout", "dependency_failure"]
+    }
+  ]
+}

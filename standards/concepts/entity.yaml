@@ -1,0 +1,24 @@
+concept: Entity
+description: >
+  A concrete, typed node in the knowledge graph — a person, organization,
+  device, account, location, asset, or document — that participates in
+  Relationships and carries Evidence. An Entity may optionally point back to
+  the Identity it belongs to.
+purpose: >
+  Provides the graph-native unit that Relationships connect and that
+  Evidence, Findings, and Reports describe, independent of how many
+  identifiers currently resolve to it.
+examples:
+  - A "person" Entity named "J. Doe" linked to an Identity aggregating an
+    email and phone number.
+  - An "organization" Entity representing a registered business, with no
+    Identity link because no natural person has yet been resolved to it.
+related_concepts:
+  - Identity
+  - Relationship
+  - Evidence
+forbidden_confusions:
+  - An Entity is not the same as an Identity; see standards/concepts/identity.yaml.
+  - An Entity's `attributes` map holds typed, entity_type-specific facts, not
+    free-form Annotation-style commentary — annotations belong on the
+    Annotation concept.

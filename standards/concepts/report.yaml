@@ -1,0 +1,20 @@
+concept: Report
+description: >
+  The human-reviewed, publishable synthesis of an Investigation's Findings.
+  A Report may only reach `active` (published) status once both an author
+  and a reviewer are recorded.
+purpose: >
+  Provides the single artifact meant for consumption outside the
+  investigative workflow, ensuring that publication always passes through
+  explicit human review and never happens on the platform's own authority.
+examples:
+  - A "draft" Report summarizing identity-resolution Findings for a Case,
+    awaiting review before publication.
+related_concepts:
+  - Investigation
+  - Finding
+forbidden_confusions:
+  - A Report is not a Finding; a Report synthesizes one or more Findings for
+    human consumption and carries its own authored_by/reviewed_by trail.
+  - A Report must never transition to `active` status without a recorded
+    reviewed_by distinct from an automated process.

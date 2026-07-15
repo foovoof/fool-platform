@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/workflow/workflow-definition.schema.json",
+  "title": "WorkflowDefinition",
+  "description": "The canonical, declarative description of a workflow: its steps, transitions, required agents/capabilities, and policies. WorkflowDefinition is the source of truth for what a workflow is; it defines no runtime behavior, per the Workflow-Driven Execution principle.",
+  "type": "object",
+  "required": ["workflow_id", "name", "version", "description", "steps", "transitions", "required_agents", "required_capabilities"],
+  "properties": {
+    "workflow_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9.]*$"
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "version": { "$ref": "../common/common-defs.schema.json#/$defs/semanticVersion" },
+    "inputs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Named inputs the workflow accepts at invocation."
+    },
+    "outputs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Named outputs the workflow produces on completion."
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "workflow-step.schema.json" }
+    },
+    "transitions": {
+      "type": "array",
+      "items": { "$ref": "workflow-transition.schema.json" }
+    },
+    "retry_policy": { "$ref": "retry-policy.schema.json" },
+    "timeout_policy": { "$ref": "timeout-policy.schema.json" },
+    "failure_policy": { "$ref": "failure-policy.schema.json" },
+    "termination_conditions": {
+      "type": "array",
+      "items": { "$ref": "termination-condition.schema.json" }
+    },
+    "required_agents": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "agent_type values (from platform/agents/registry/agents.yaml) this workflow requires."
+    },
+    "required_capabilities": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "workflow_id": "wf.research.v1",
+      "name": "Research Workflow",
+      "description": "Enumerates and ranks candidate public sources for a given query.",
+      "version": "1.0.0",
+      "inputs": ["query", "query_type"],
+      "outputs": ["candidate_sources"],
+      "steps": [
+        {
+          "step_id": "enumerate-sources",
+          "name": "Enumerate candidate sources",
+          "required_capabilities": ["research"],
+          "required_agent_type": "research",
+          "inputs": ["query"],
+          "outputs": ["candidate_sources"],
+          "human_review_required": false,
+          "metadata": {}
+        }
+      ],
+      "transitions": [],
+      "required_agents": ["research"],
+      "required_capabilities": ["research"],
+      "metadata": {}
+    }
+  ]
+}

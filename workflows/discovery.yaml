@@ -1,0 +1,56 @@
+# workflows/discovery.yaml
+#
+# WorkflowDefinition: wf.discovery.v1
+#
+# Declarative description only — no runtime executor lives in this file or
+# this repository yet.
+
+workflow_id: wf.discovery.v1
+name: Discovery Workflow
+version: 1.0.0
+description: >
+  Proposes candidate Entities and Relationships suggested by a set of
+  already-collected Evidence items, without asserting them as confirmed
+  Findings — discovery output is a candidate set for investigation to
+  confirm or reject.
+
+required_agents: [discovery]
+required_capabilities: [discovery]
+
+steps:
+  - step_id: propose_entities
+    name: Propose candidate entities
+    agent_type: discovery
+    capability: discovery
+    input_schema_ref: contracts/domain/evidence.schema.json
+    output_schema_ref: contracts/domain/entity.schema.json
+    retry_policy:
+      max_attempts: 3
+      backoff_seconds: 5
+    timeout_policy:
+      duration_seconds: 120
+
+  - step_id: propose_relationships
+    name: Propose candidate relationships
+    agent_type: discovery
+    capability: discovery
+    input_schema_ref: contracts/domain/entity.schema.json
+    output_schema_ref: contracts/domain/relationship.schema.json
+    retry_policy:
+      max_attempts: 3
+      backoff_seconds: 5
+    timeout_policy:
+      duration_seconds: 120
+
+transitions:
+  - from_step: propose_entities
+    to_step: propose_relationships
+    condition: step_completed
+
+failure_policy:
+  on_failure: escalate_to_human
+  escalation_target: case.owner
+
+termination_conditions:
+  - condition_type: step_completed
+    step_id: propose_relationships

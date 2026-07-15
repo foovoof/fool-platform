@@ -1,0 +1,20 @@
+concept: Case
+description: >
+  The top-level administrative and accountability container for platform
+  work. A Case has a single accountable human owner and may hold one or more
+  Investigations. Access control, retention, and reporting are ultimately
+  organized at the Case level.
+purpose: >
+  Guarantees the Human Accountability principle at the highest level of
+  organization: every unit of platform work traces back to a Case with a
+  named, accountable human owner — the platform never operates a Case on its
+  own authority.
+examples:
+  - "Case-2026-0142", opened from an inbound tip, owned by an analyst lead,
+    containing one active Investigation.
+related_concepts:
+  - Investigation
+  - Report
+forbidden_confusions:
+  - A Case is not an Investigation; see standards/concepts/investigation.yaml.
+  - A Case must never be created or closed without a non-empty `owner`.

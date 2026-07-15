@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/confidence/scoring-model.schema.json",
+  "title": "ScoringModel",
+  "description": "The declarative definition of a named scoring method that can be referenced by ConfidenceModel.method (e.g. how 'identifier_resolution' maps evidence quantity/quality to a score band). Defines the method's rules; does not implement a scoring engine.",
+  "type": "object",
+  "required": ["method_id", "name", "score_bands"],
+  "properties": {
+    "method_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "applies_to": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["identity", "entity", "relationship", "evidence", "source", "finding", "investigation"]
+      }
+    },
+    "score_bands": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["level", "min_score", "max_score"],
+        "properties": {
+          "level": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceLevel" },
+          "min_score": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceScore" },
+          "max_score": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceScore" },
+          "criteria": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "version": { "$ref": "../common/common-defs.schema.json#/$defs/semanticVersion" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "method_id": "identifier_resolution",
+      "name": "Identifier Resolution Scoring",
+      "applies_to": ["identity"],
+      "score_bands": [
+        { "level": "very_high", "min_score": 0.9, "max_score": 1.0, "criteria": "3+ independent corroborating sources" },
+        { "level": "low", "min_score": 0.0, "max_score": 0.4, "criteria": "single uncorroborated source" }
+      ],
+      "version": "1.0.0"
+    }
+  ]
+}

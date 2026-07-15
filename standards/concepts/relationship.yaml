@@ -1,0 +1,25 @@
+concept: Relationship
+description: >
+  A typed, evidence-backed, directional edge in the knowledge graph
+  connecting exactly two Entity references. A Relationship carries its own
+  confidence and optional temporal validity window, independent of the
+  confidence of either endpoint Entity.
+purpose: >
+  Encodes how Entities are connected (ownership, employment, communication,
+  co-location, transactions, etc.) so that the graph — not free text — is the
+  authoritative record of connections between subjects.
+examples:
+  - An "employed_by" Relationship from a person Entity to an organization
+    Entity, valid from a specific date.
+  - A "communicates_with" Relationship between two account Entities, with no
+    validTo because it is still ongoing.
+related_concepts:
+  - Entity
+  - Evidence
+  - Finding
+forbidden_confusions:
+  - A Relationship is not a Finding. A Relationship is a graph edge with its
+    own confidence; a Finding is a broader analytical conclusion that may
+    cite one or more Relationships as support.
+  - source_entity_ref and target_entity_ref must reference two distinct
+    Entities; a Relationship never connects an Entity to itself.

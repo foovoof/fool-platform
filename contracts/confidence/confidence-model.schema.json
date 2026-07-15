@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/confidence/confidence-model.schema.json",
+  "title": "ConfidenceModel",
+  "description": "The canonical shape of a confidence assessment, embeddable on any information-bearing platform object per the Confidence Everywhere principle. This schema is the normative definition; contracts/common/common-defs.schema.json#/$defs/confidenceRef mirrors it for embedding via $ref.",
+  "type": "object",
+  "required": ["score", "level", "method", "assessed_at"],
+  "properties": {
+    "score": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceScore" },
+    "level": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceLevel" },
+    "rationale": {
+      "type": "string",
+      "description": "Human-readable explanation of why this score/level was assigned."
+    },
+    "method": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The named method or model that produced this assessment, e.g. 'manual_review', 'identifier_resolution'."
+    },
+    "assessed_by": {
+      "type": "string",
+      "description": "The human or agent_id that produced the assessment."
+    },
+    "assessed_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "evidence_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "source_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "score": 0.82,
+      "level": "high",
+      "rationale": "Three independent public sources corroborate the identifier link.",
+      "method": "manual_review",
+      "assessed_by": "analyst.jane@fool-platform.dev",
+      "assessed_at": "2026-07-15T09:00:00Z",
+      "evidence_refs": [],
+      "source_refs": []
+    }
+  ]
+}

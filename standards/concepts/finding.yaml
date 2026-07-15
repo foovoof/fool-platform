@@ -1,0 +1,22 @@
+concept: Finding
+description: >
+  A single analytical conclusion drawn from one or more pieces of Evidence,
+  Entities, or Relationships within the scope of one Investigation. A
+  Finding must always carry a confidence assessment with an explicit
+  rationale — never a bare score.
+purpose: >
+  Marks the boundary between raw observed material (Evidence, Entities,
+  Relationships) and an analyst's or agent's interpretation of that material,
+  keeping conclusions traceable to their support.
+examples:
+  - "The reported email and phone number resolve to the same identity" as a
+    Finding citing two Evidence items and one Relationship.
+related_concepts:
+  - Investigation
+  - Evidence
+  - Report
+forbidden_confusions:
+  - A Finding is not a Report. A Report is the human-reviewed, publishable
+    synthesis of one or more Findings; a Finding is a single conclusion.
+  - A Finding is not raw Evidence; it must reference the Evidence/Entity/
+    Relationship it is derived from and must not exist unsupported.

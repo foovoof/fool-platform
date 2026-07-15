@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/workflow/failure-policy.schema.json",
+  "title": "FailurePolicy",
+  "description": "Declarative behavior for how a workflow reacts to a step failure that exhausts its retry policy. Definition only; no runtime enforcement in this phase.",
+  "type": "object",
+  "required": ["on_failure"],
+  "properties": {
+    "on_failure": {
+      "type": "string",
+      "enum": ["abort_workflow", "skip_step", "escalate_to_human", "compensate"]
+    },
+    "escalation_target": {
+      "type": "string",
+      "description": "Role or agent_id to escalate to when on_failure is 'escalate_to_human'."
+    },
+    "compensation_step_id": {
+      "type": "string",
+      "description": "Step id to execute as compensation when on_failure is 'compensate'."
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    { "on_failure": "escalate_to_human", "escalation_target": "analyst.lead@fool-platform.dev" }
+  ]
+}

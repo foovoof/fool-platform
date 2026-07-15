@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/confidence/source-reliability.schema.json",
+  "title": "SourceReliability",
+  "description": "A confidence assessment scoped specifically to a Source's inherent trustworthiness, independent of any individual evidence collected from it. Referenced by contracts/domain/source.schema.json#/properties/reliability.",
+  "type": "object",
+  "required": ["score", "level", "method", "assessed_at", "source_ref"],
+  "properties": {
+    "score": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceScore" },
+    "level": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceLevel" },
+    "rationale": { "type": "string" },
+    "method": { "type": "string" },
+    "assessed_by": { "type": "string" },
+    "assessed_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "evidence_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "source_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "source_ref": { "$ref": "../common/common-defs.schema.json#/$defs/reference" },
+    "corroboration_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of independent sources that corroborate this source's outputs."
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "score": 0.9,
+      "level": "very_high",
+      "method": "institutional_authority",
+      "assessed_at": "2026-07-15T08:00:00Z",
+      "evidence_refs": [],
+      "source_refs": [],
+      "source_ref": { "ref_id": "0c9b6f2a-4e6a-4a1a-9a8a-8f6c2b1d3e44", "ref_type": "source" },
+      "corroboration_count": 2
+    }
+  ]
+}

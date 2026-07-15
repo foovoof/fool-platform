@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/domain/report.schema.json",
+  "title": "Report",
+  "description": "A Report is the human-reviewed, publishable synthesis of an Investigation's findings. Reports never bypass human accountability: a report may only reach 'active'/published status once authored_by and reviewed_by are recorded.",
+  "type": "object",
+  "required": ["id", "version", "created_at", "updated_at", "status", "investigation_ref", "case_ref", "title", "summary", "authored_by"],
+  "properties": {
+    "id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "version": { "$ref": "../common/common-defs.schema.json#/$defs/semanticVersion" },
+    "created_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "updated_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "status": { "$ref": "../common/common-defs.schema.json#/$defs/status" },
+    "classification": { "$ref": "../common/common-defs.schema.json#/$defs/classificationLevel" },
+    "investigation_ref": { "$ref": "../common/common-defs.schema.json#/$defs/reference" },
+    "case_ref": { "$ref": "../common/common-defs.schema.json#/$defs/reference" },
+    "title": { "type": "string", "minLength": 1 },
+    "summary": { "type": "string", "minLength": 1 },
+    "finding_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "authored_by": { "type": "string", "minLength": 1 },
+    "reviewed_by": { "type": "string" },
+    "published_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "confidence": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceRef" },
+    "provenance": { "$ref": "../common/common-defs.schema.json#/$defs/provenance" },
+    "tags": { "$ref": "../common/common-defs.schema.json#/$defs/tags" },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "id": "7a8b9c0d-1e2f-4a3b-9c0d-1e2f3a4b5c6d",
+      "version": "1.0.0",
+      "created_at": "2026-07-15T10:00:00Z",
+      "updated_at": "2026-07-15T10:00:00Z",
+      "status": "under_review",
+      "classification": "confidential",
+      "investigation_ref": { "ref_id": "6f7a8b9c-0d1e-4f2a-9b0c-1d2e3f4a5b6c", "ref_type": "investigation" },
+      "case_ref": { "ref_id": "5e6f7a8b-9c0d-4e1f-9a0b-1c2d3e4f5a6b", "ref_type": "case" },
+      "title": "Identity resolution findings — Case-2026-0142",
+      "summary": "The reported email and phone number resolve to the same identity with high confidence based on three independent public sources.",
+      "finding_refs": [],
+      "authored_by": "analyst.jane@fool-platform.dev",
+      "confidence": {
+        "score": 0.8,
+        "level": "high",
+        "method": "analyst_synthesis",
+        "assessed_at": "2026-07-15T10:00:00Z"
+      },
+      "provenance": {
+        "origin": "reporting-agent",
+        "recorded_at": "2026-07-15T10:00:00Z"
+      },
+      "tags": [],
+      "metadata": {}
+    }
+  ]
+}

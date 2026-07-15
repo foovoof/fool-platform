@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/domain/source.schema.json",
+  "title": "Source",
+  "description": "A Source is an originating channel from which Evidence is collected: a public registry, a search engine, a social platform, a leaked dataset, a sensor feed, or a human tip line. Sources carry an independent reliability assessment that propagates into the confidence of everything collected from them.",
+  "type": "object",
+  "required": ["id", "version", "created_at", "updated_at", "status", "source_type", "name"],
+  "properties": {
+    "id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "version": { "$ref": "../common/common-defs.schema.json#/$defs/semanticVersion" },
+    "created_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "updated_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "status": { "$ref": "../common/common-defs.schema.json#/$defs/status" },
+    "classification": { "$ref": "../common/common-defs.schema.json#/$defs/classificationLevel" },
+    "source_type": {
+      "type": "string",
+      "enum": ["public_registry", "search_engine", "social_platform", "leaked_dataset", "sensor_feed", "human_report", "internal_system", "other"]
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "uri": { "type": "string", "format": "uri" },
+    "reliability": {
+      "$ref": "../common/common-defs.schema.json#/$defs/confidenceRef",
+      "description": "Independent reliability assessment of this source, distinct from the confidence of any individual piece of evidence collected from it."
+    },
+    "provenance": { "$ref": "../common/common-defs.schema.json#/$defs/provenance" },
+    "tags": { "$ref": "../common/common-defs.schema.json#/$defs/tags" },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "id": "0c9b6f2a-4e6a-4a1a-9a8a-8f6c2b1d3e44",
+      "version": "1.0.0",
+      "created_at": "2026-07-15T08:00:00Z",
+      "updated_at": "2026-07-15T08:00:00Z",
+      "status": "active",
+      "classification": "public",
+      "source_type": "public_registry",
+      "name": "National Business Registry",
+      "uri": "https://registry.example.gov",
+      "reliability": {
+        "score": 0.9,
+        "level": "very_high",
+        "method": "institutional_authority",
+        "assessed_at": "2026-07-15T08:00:00Z"
+      },
+      "provenance": {
+        "origin": "research-agent",
+        "recorded_at": "2026-07-15T08:00:00Z"
+      },
+      "tags": ["government"],
+      "metadata": {}
+    }
+  ]
+}

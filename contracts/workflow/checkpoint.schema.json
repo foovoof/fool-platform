@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/workflow/checkpoint.schema.json",
+  "title": "Checkpoint",
+  "description": "A recorded snapshot of a WorkflowExecution's state at a point in time, enabling later inspection or resumption. Defines the shape of a checkpoint record only; no persistence or runtime resumption is implemented in this phase.",
+  "type": "object",
+  "required": ["checkpoint_id", "workflow_execution_id", "step_id", "captured_at", "state_snapshot"],
+  "properties": {
+    "checkpoint_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "workflow_execution_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "step_id": { "type": "string", "minLength": 1 },
+    "captured_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "state_snapshot": {
+      "type": "object",
+      "description": "Opaque snapshot of WorkflowState at capture time.",
+      "additionalProperties": true
+    },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "checkpoint_id": "e5f6a7b8-c9d0-4e1f-9a0b-1c2d3e4f5a6b",
+      "workflow_execution_id": "a1b2c3d4-e5f6-4a1b-8c9d-0e1f2a3b4c5d",
+      "step_id": "enumerate-sources",
+      "captured_at": "2026-07-15T09:11:00Z",
+      "state_snapshot": { "completed_steps": ["enumerate-sources"] },
+      "metadata": {}
+    }
+  ]
+}

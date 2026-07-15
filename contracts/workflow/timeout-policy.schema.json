@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/workflow/timeout-policy.schema.json",
+  "title": "TimeoutPolicy",
+  "description": "Declarative time budget for a workflow or step. Defines the budget only; no runtime scheduler enforces it in this phase.",
+  "type": "object",
+  "required": ["duration_seconds", "on_timeout"],
+  "properties": {
+    "duration_seconds": { "type": "number", "exclusiveMinimum": 0 },
+    "on_timeout": {
+      "type": "string",
+      "enum": ["fail", "retry", "skip", "escalate"]
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    { "duration_seconds": 300, "on_timeout": "retry" }
+  ]
+}

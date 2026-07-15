@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/confidence/relationship-confidence.schema.json",
+  "title": "RelationshipConfidence",
+  "description": "A confidence assessment scoped to a single Relationship edge, capturing how strongly the connection between two entities is trusted. Referenced by contracts/domain/relationship.schema.json#/properties/confidence.",
+  "type": "object",
+  "required": ["score", "level", "method", "assessed_at", "relationship_ref"],
+  "properties": {
+    "score": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceScore" },
+    "level": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceLevel" },
+    "rationale": { "type": "string" },
+    "method": { "type": "string" },
+    "assessed_by": { "type": "string" },
+    "assessed_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "evidence_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "source_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "relationship_ref": { "$ref": "../common/common-defs.schema.json#/$defs/reference" },
+    "temporal_stability": {
+      "type": "string",
+      "enum": ["confirmed_current", "historical", "uncertain_duration"],
+      "description": "How stable/current the relationship is believed to be over time."
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "score": 0.6,
+      "level": "moderate",
+      "method": "graph_analysis",
+      "assessed_at": "2026-07-15T09:00:00Z",
+      "evidence_refs": [],
+      "source_refs": [],
+      "relationship_ref": { "ref_id": "2b3c4d5e-6f7a-4b1c-9d0e-1f2a3b4c5d6e", "ref_type": "relationship" },
+      "temporal_stability": "confirmed_current"
+    }
+  ]
+}

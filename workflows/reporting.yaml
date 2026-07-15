@@ -1,0 +1,41 @@
+# workflows/reporting.yaml
+#
+# WorkflowDefinition: wf.reporting.v1
+#
+# Declarative description only — no runtime executor lives in this file or
+# this repository yet.
+
+workflow_id: wf.reporting.v1
+name: Reporting Workflow
+version: 1.0.0
+description: >
+  Drafts a human-reviewable Report synthesizing one or more Findings for a
+  Case. The workflow only ever produces a `draft` or `under_review` Report;
+  publication to `active` status requires a separate, explicit human action
+  outside this workflow, per the Human Accountability principle.
+
+required_agents: [reporting]
+required_capabilities: [reporting]
+
+steps:
+  - step_id: draft_report
+    name: Draft report
+    agent_type: reporting
+    capability: reporting
+    input_schema_ref: contracts/confidence/finding-confidence.schema.json
+    output_schema_ref: contracts/domain/report.schema.json
+    retry_policy:
+      max_attempts: 3
+      backoff_seconds: 10
+    timeout_policy:
+      duration_seconds: 240
+
+transitions: []
+
+failure_policy:
+  on_failure: escalate_to_human
+  escalation_target: case.owner
+
+termination_conditions:
+  - condition_type: step_completed
+    step_id: draft_report

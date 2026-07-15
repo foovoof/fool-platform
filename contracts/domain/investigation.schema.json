@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/domain/investigation.schema.json",
+  "title": "Investigation",
+  "description": "An Investigation is a bounded unit of analytical work within a Case, pursuing a specific objective (e.g. resolving an identity, mapping a network, verifying a claim). Investigations aggregate the identities, entities, evidence, and findings produced by workflow execution.",
+  "type": "object",
+  "required": ["id", "version", "created_at", "updated_at", "status", "case_ref", "title", "objective"],
+  "properties": {
+    "id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "version": { "$ref": "../common/common-defs.schema.json#/$defs/semanticVersion" },
+    "created_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "updated_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "status": { "$ref": "../common/common-defs.schema.json#/$defs/status" },
+    "classification": { "$ref": "../common/common-defs.schema.json#/$defs/classificationLevel" },
+    "case_ref": { "$ref": "../common/common-defs.schema.json#/$defs/reference" },
+    "title": { "type": "string", "minLength": 1 },
+    "objective": { "type": "string", "minLength": 1 },
+    "identity_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "entity_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "evidence_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "finding_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "workflow_refs": {
+      "$ref": "../common/common-defs.schema.json#/$defs/referenceList",
+      "description": "References to WorkflowExecution objects that carried out this investigation's work."
+    },
+    "confidence": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceRef" },
+    "provenance": { "$ref": "../common/common-defs.schema.json#/$defs/provenance" },
+    "tags": { "$ref": "../common/common-defs.schema.json#/$defs/tags" },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "id": "6f7a8b9c-0d1e-4f2a-9b0c-1d2e3f4a5b6c",
+      "version": "1.0.0",
+      "created_at": "2026-07-15T07:15:00Z",
+      "updated_at": "2026-07-15T07:15:00Z",
+      "status": "active",
+      "classification": "confidential",
+      "case_ref": { "ref_id": "5e6f7a8b-9c0d-4e1f-9a0b-1c2d3e4f5a6b", "ref_type": "case" },
+      "title": "Resolve subject identity from partial identifiers",
+      "objective": "Confirm whether the reported email and phone number resolve to the same natural person.",
+      "identity_refs": [{ "ref_id": "b7e2b3d0-5c3f-4a9e-9b8b-2e7f1a6c9d10", "ref_type": "identity" }],
+      "entity_refs": [],
+      "evidence_refs": [],
+      "finding_refs": [],
+      "workflow_refs": [],
+      "confidence": {
+        "score": 0.5,
+        "level": "moderate",
+        "method": "in_progress",
+        "assessed_at": "2026-07-15T07:15:00Z"
+      },
+      "provenance": {
+        "origin": "case-intake",
+        "recorded_at": "2026-07-15T07:15:00Z"
+      },
+      "tags": [],
+      "metadata": {}
+    }
+  ]
+}

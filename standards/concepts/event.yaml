@@ -1,0 +1,25 @@
+concept: Event
+description: >
+  An immutable record that something happened to a subject (an Identity,
+  Entity, AgentTask, WorkflowExecution, etc.) at a specific point in time.
+  Events are the official, versionable language the platform's components
+  use to communicate, per the Event-Driven Language principle.
+purpose: >
+  Decouples producers and consumers of platform state changes: any component
+  can observe "identity.identifier.added" without knowing which agent or
+  workflow produced it, as long as it conforms to the AgentEvent/Event
+  contract shape.
+examples:
+  - An "agent.task.completed" AgentEvent, referencing the completed task_id
+    and produced result_id.
+  - A domain-level "identity.identifier.added" Event recording that a new
+    identifier was resolved onto an existing Identity.
+related_concepts:
+  - Timeline
+  - AgentEvent
+forbidden_confusions:
+  - An Event is not a Finding. An Event records that something happened; a
+    Finding records an analytical conclusion about what that means.
+  - Event.event_type must be dotted and namespaced (e.g.
+    "identity.identifier.added"); free-form event names are forbidden
+    because they cannot be safely versioned.

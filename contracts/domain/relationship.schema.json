@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/domain/relationship.schema.json",
+  "title": "Relationship",
+  "description": "A Relationship is a typed, evidence-backed edge in the knowledge graph connecting two entities. Relationships carry their own confidence and temporal validity, independent of the confidence of either endpoint entity.",
+  "type": "object",
+  "required": ["id", "version", "created_at", "updated_at", "status", "relationship_type", "source_entity_ref", "target_entity_ref"],
+  "properties": {
+    "id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "version": { "$ref": "../common/common-defs.schema.json#/$defs/semanticVersion" },
+    "created_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "updated_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "status": { "$ref": "../common/common-defs.schema.json#/$defs/status" },
+    "classification": { "$ref": "../common/common-defs.schema.json#/$defs/classificationLevel" },
+    "relationship_type": {
+      "type": "string",
+      "enum": ["associated_with", "owns", "employed_by", "located_at", "communicates_with", "controls", "member_of", "transacted_with", "other"]
+    },
+    "source_entity_ref": { "$ref": "../common/common-defs.schema.json#/$defs/reference" },
+    "target_entity_ref": { "$ref": "../common/common-defs.schema.json#/$defs/reference" },
+    "directional": { "type": "boolean", "default": true },
+    "valid_from": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "valid_to": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "evidence_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "source_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "confidence": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceRef" },
+    "provenance": { "$ref": "../common/common-defs.schema.json#/$defs/provenance" },
+    "tags": { "$ref": "../common/common-defs.schema.json#/$defs/tags" },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "id": "2b3c4d5e-6f7a-4b1c-9d0e-1f2a3b4c5d6e",
+      "version": "1.0.0",
+      "created_at": "2026-07-15T09:00:00Z",
+      "updated_at": "2026-07-15T09:00:00Z",
+      "status": "active",
+      "classification": "internal",
+      "relationship_type": "employed_by",
+      "source_entity_ref": { "ref_id": "1a2b3c4d-5e6f-4a1b-8c9d-0e1f2a3b4c5d", "ref_type": "entity" },
+      "target_entity_ref": { "ref_id": "3c4d5e6f-7a8b-4c1d-9e0f-1a2b3c4d5e6f", "ref_type": "entity" },
+      "directional": true,
+      "valid_from": "2024-01-01T00:00:00Z",
+      "evidence_refs": [],
+      "source_refs": [],
+      "confidence": {
+        "score": 0.6,
+        "level": "moderate",
+        "method": "graph_analysis",
+        "assessed_at": "2026-07-15T09:00:00Z"
+      },
+      "provenance": {
+        "origin": "investigation-agent",
+        "recorded_at": "2026-07-15T09:00:00Z"
+      },
+      "tags": [],
+      "metadata": {}
+    }
+  ]
+}

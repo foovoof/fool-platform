@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/agent/agent-task.schema.json",
+  "title": "AgentTask",
+  "description": "A unit of work dispatched to a single agent within the scope of a workflow step. AgentTask is the canonical request contract between the workflow layer and an agent; it never implies runtime execution semantics in this phase.",
+  "type": "object",
+  "required": ["task_id", "agent_id", "agent_type", "objective", "status", "created_at"],
+  "properties": {
+    "task_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "agent_id": { "$ref": "../common/common-defs.schema.json#/$defs/dottedIdentifier" },
+    "agent_type": {
+      "type": "string",
+      "enum": ["research", "extraction", "discovery", "investigation", "reporting", "tracking", "review"]
+    },
+    "workflow_id": { "$ref": "../common/common-defs.schema.json#/$defs/dottedIdentifier" },
+    "case_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "trace_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "objective": { "type": "string", "minLength": 1 },
+    "inputs": {
+      "type": "object",
+      "description": "Task-specific input payload, shaped by the issuing workflow step.",
+      "additionalProperties": true
+    },
+    "required_capabilities": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Capability ids (from platform/agents/registry/capabilities.yaml) required to execute this task."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["queued", "assigned", "in_progress", "completed", "failed", "cancelled"]
+    },
+    "execution_context": { "$ref": "agent-context.schema.json" },
+    "created_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "updated_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "confidence": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceRef" },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "task_id": "8b9c0d1e-2f3a-4b4c-9d0e-1f2a3b4c5d6e",
+      "agent_id": "agent.research.v1",
+      "agent_type": "research",
+      "workflow_id": "wf.research.v1",
+      "case_id": "5e6f7a8b-9c0d-4e1f-9a0b-1c2d3e4f5a6b",
+      "trace_id": "9c0d1e2f-3a4b-4c5d-9e0f-1a2b3c4d5e6f",
+      "objective": "Enumerate public sources referencing the given email identifier.",
+      "inputs": { "query": "j.doe@example.com", "query_type": "email" },
+      "required_capabilities": ["research"],
+      "status": "queued",
+      "created_at": "2026-07-15T09:05:00Z",
+      "updated_at": "2026-07-15T09:05:00Z",
+      "metadata": {}
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/workflow/workflow-execution.schema.json",
+  "title": "WorkflowExecution",
+  "description": "A single declared invocation of a WorkflowDefinition against a case/investigation, tracking its current WorkflowState and eventual outcome. Represents the record of an execution; this phase defines the record shape only, without an executing runtime.",
+  "type": "object",
+  "required": ["workflow_execution_id", "workflow_id", "case_id", "status", "started_at"],
+  "properties": {
+    "workflow_execution_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "workflow_id": { "type": "string", "minLength": 1 },
+    "workflow_version": { "$ref": "../common/common-defs.schema.json#/$defs/semanticVersion" },
+    "case_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "investigation_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "trace_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "running", "completed", "failed", "cancelled"]
+    },
+    "state": { "$ref": "workflow-state.schema.json" },
+    "checkpoints": {
+      "type": "array",
+      "items": { "$ref": "checkpoint.schema.json" }
+    },
+    "started_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "completed_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "initiated_by": { "type": "string" },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "workflow_execution_id": "a1b2c3d4-e5f6-4a1b-8c9d-0e1f2a3b4c5d",
+      "workflow_id": "wf.research.v1",
+      "workflow_version": "1.0.0",
+      "case_id": "5e6f7a8b-9c0d-4e1f-9a0b-1c2d3e4f5a6b",
+      "investigation_id": "6f7a8b9c-0d1e-4f2a-9b0c-1d2e3f4a5b6c",
+      "trace_id": "9c0d1e2f-3a4b-4c5d-9e0f-1a2b3c4d5e6f",
+      "status": "running",
+      "started_at": "2026-07-15T09:05:00Z",
+      "initiated_by": "analyst.lead@fool-platform.dev",
+      "metadata": {}
+    }
+  ]
+}

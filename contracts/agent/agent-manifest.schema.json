@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/agent/agent-manifest.schema.json",
+  "title": "AgentManifest",
+  "description": "The canonical registration record for an agent type, as declared in platform/agents/registry/agents.yaml. The manifest is the single source of truth for what an agent is, what it can do, and under what policies it may be invoked.",
+  "type": "object",
+  "required": ["agent_id", "name", "version", "description", "capabilities", "enabled"],
+  "properties": {
+    "agent_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.]*$"
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "version": { "$ref": "../common/common-defs.schema.json#/$defs/semanticVersion" },
+    "description": { "type": "string", "minLength": 1 },
+    "agent_type": {
+      "type": "string",
+      "enum": ["research", "extraction", "discovery", "investigation", "reporting", "tracking", "review"]
+    },
+    "capabilities": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Capability ids this agent advertises, matched against contracts/agent/agent-capability.schema.json entries."
+    },
+    "inputs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Named input contracts this agent expects to receive."
+    },
+    "outputs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Named output contracts this agent produces."
+    },
+    "policies": {
+      "type": "object",
+      "properties": {
+        "retry_policy_ref": { "type": "string" },
+        "timeout_policy_ref": { "type": "string" },
+        "failure_policy_ref": { "type": "string" },
+        "max_classification": { "$ref": "../common/common-defs.schema.json#/$defs/classificationLevel" }
+      },
+      "additionalProperties": false
+    },
+    "enabled": { "type": "boolean" },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "agent_id": "agent.research.v1",
+      "name": "Research Agent",
+      "version": "1.0.0",
+      "description": "Enumerates candidate public sources for a given identifier or objective.",
+      "agent_type": "research",
+      "capabilities": ["research"],
+      "inputs": ["agent-task"],
+      "outputs": ["agent-result"],
+      "policies": { "max_classification": "confidential" },
+      "enabled": true,
+      "metadata": {}
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/agent/agent-error.schema.json",
+  "title": "AgentError",
+  "description": "A structured error raised during agent task execution. Errors are first-class contract objects so that workflow failure policies can reason about them declaratively.",
+  "type": "object",
+  "required": ["error_id", "task_id", "error_code", "message", "occurred_at"],
+  "properties": {
+    "error_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "task_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "error_code": {
+      "type": "string",
+      "enum": ["invalid_input", "capability_unavailable", "timeout", "dependency_failure", "policy_violation", "internal_error", "cancelled"]
+    },
+    "message": { "type": "string", "minLength": 1 },
+    "detail": { "type": "string" },
+    "retryable": { "type": "boolean" },
+    "occurred_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "trace_id": { "$ref": "../common/common-defs.schema.json#/$defs/id" },
+    "metadata": { "$ref": "../common/common-defs.schema.json#/$defs/metadata" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "error_id": "b2c3d4e5-f6a7-4b1c-9d0e-1f2a3b4c5d6e",
+      "task_id": "8b9c0d1e-2f3a-4b4c-9d0e-1f2a3b4c5d6e",
+      "error_code": "timeout",
+      "message": "Task exceeded its configured timeout policy.",
+      "retryable": true,
+      "occurred_at": "2026-07-15T09:10:00Z",
+      "trace_id": "9c0d1e2f-3a4b-4c5d-9e0f-1a2b3c4d5e6f",
+      "metadata": {}
+    }
+  ]
+}

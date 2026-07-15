@@ -1,0 +1,41 @@
+# workflows/investigation.yaml
+#
+# WorkflowDefinition: wf.investigation.v1
+#
+# Declarative description only — no runtime executor lives in this file or
+# this repository yet.
+
+workflow_id: wf.investigation.v1
+name: Investigation Workflow
+version: 1.0.0
+description: >
+  Synthesizes Evidence, Entities, and Relationships collected within an
+  Investigation into Findings, each carrying an explicit confidence
+  rationale. Never produces a Finding unsupported by at least one
+  Evidence, Entity, or Relationship reference.
+
+required_agents: [investigation]
+required_capabilities: [investigation]
+
+steps:
+  - step_id: synthesize_findings
+    name: Synthesize findings
+    agent_type: investigation
+    capability: investigation
+    input_schema_ref: contracts/domain/investigation.schema.json
+    output_schema_ref: contracts/confidence/finding-confidence.schema.json
+    retry_policy:
+      max_attempts: 3
+      backoff_seconds: 15
+    timeout_policy:
+      duration_seconds: 300
+
+transitions: []
+
+failure_policy:
+  on_failure: escalate_to_human
+  escalation_target: case.owner
+
+termination_conditions:
+  - condition_type: step_completed
+    step_id: synthesize_findings

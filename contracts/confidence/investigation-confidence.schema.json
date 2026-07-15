@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fool-platform.dev/schemas/confidence/investigation-confidence.schema.json",
+  "title": "InvestigationConfidence",
+  "description": "A confidence assessment scoped to an entire Investigation, aggregating the confidence of its constituent findings against its stated objective. Referenced by contracts/domain/investigation.schema.json#/properties/confidence.",
+  "type": "object",
+  "required": ["score", "level", "method", "assessed_at", "investigation_ref", "rationale"],
+  "properties": {
+    "score": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceScore" },
+    "level": { "$ref": "../common/common-defs.schema.json#/$defs/confidenceLevel" },
+    "rationale": { "type": "string", "minLength": 1 },
+    "method": { "type": "string" },
+    "assessed_by": { "type": "string" },
+    "assessed_at": { "$ref": "../common/common-defs.schema.json#/$defs/timestamp" },
+    "evidence_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "source_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" },
+    "investigation_ref": { "$ref": "../common/common-defs.schema.json#/$defs/reference" },
+    "objective_satisfied": {
+      "type": "boolean",
+      "description": "Whether the investigation's stated objective is considered satisfied at this confidence level."
+    },
+    "contributing_finding_refs": { "$ref": "../common/common-defs.schema.json#/$defs/referenceList" }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "score": 0.8,
+      "level": "high",
+      "rationale": "The stated identity-resolution objective is satisfied by corroborated findings across three sources.",
+      "method": "analyst_synthesis",
+      "assessed_at": "2026-07-15T10:00:00Z",
+      "evidence_refs": [],
+      "source_refs": [],
+      "investigation_ref": { "ref_id": "6f7a8b9c-0d1e-4f2a-9b0c-1d2e3f4a5b6c", "ref_type": "investigation" },
+      "objective_satisfied": true,
+      "contributing_finding_refs": []
+    }
+  ]
+}
