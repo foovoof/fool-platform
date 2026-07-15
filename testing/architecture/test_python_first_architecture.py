@@ -818,3 +818,152 @@ class TestDomainKnowledgePurity:
             content = py_file.read_text()
             assert "from knowledge" not in content
             assert "import knowledge" not in content
+
+
+class TestIntelligenceFoundation:
+    """Tests for Intelligence Runtime Foundation."""
+    
+    def test_intelligence_directory_exists(self):
+        """Test that intelligence directory exists."""
+        intelligence_dir = REPO_ROOT / "intelligence"
+        assert intelligence_dir.exists(), "Intelligence directory should exist"
+    
+    def test_intelligence_has_models_submodule(self):
+        """Test that intelligence has models submodule."""
+        models_dir = REPO_ROOT / "intelligence" / "models"
+        assert models_dir.exists(), "Models directory should exist"
+        assert (models_dir / "__init__.py").exists()
+    
+    def test_intelligence_has_context_module(self):
+        """Test that intelligence has context module."""
+        context_file = REPO_ROOT / "intelligence" / "context.py"
+        assert context_file.exists(), "Context module should exist"
+    
+    def test_intelligence_has_session_module(self):
+        """Test that intelligence has session module."""
+        session_file = REPO_ROOT / "intelligence" / "session.py"
+        assert session_file.exists(), "Session module should exist"
+    
+    def test_intelligence_has_runtime_submodule(self):
+        """Test that intelligence has runtime submodule."""
+        runtime_dir = REPO_ROOT / "intelligence" / "runtime"
+        assert runtime_dir.exists(), "Runtime directory should exist"
+        assert (runtime_dir / "__init__.py").exists()
+    
+    def test_intelligence_has_pipeline_submodule(self):
+        """Test that intelligence has pipeline submodule."""
+        pipeline_dir = REPO_ROOT / "intelligence" / "pipeline"
+        assert pipeline_dir.exists(), "Pipeline directory should exist"
+        assert (pipeline_dir / "__init__.py").exists()
+    
+    def test_intelligence_has_validation_submodule(self):
+        """Test that intelligence has validation submodule."""
+        validation_dir = REPO_ROOT / "intelligence" / "validation"
+        assert validation_dir.exists(), "Validation directory should exist"
+        assert (validation_dir / "__init__.py").exists()
+    
+    def test_intelligence_has_events_submodule(self):
+        """Test that intelligence has events submodule."""
+        events_dir = REPO_ROOT / "intelligence" / "events"
+        assert events_dir.exists(), "Events directory should exist"
+        assert (events_dir / "__init__.py").exists()
+    
+    def test_intelligence_has_services_submodule(self):
+        """Test that intelligence has services submodule."""
+        services_dir = REPO_ROOT / "intelligence" / "services"
+        assert services_dir.exists(), "Services directory should exist"
+        assert (services_dir / "__init__.py").exists()
+    
+    def test_intelligence_has_registry_submodule(self):
+        """Test that intelligence has registry submodule."""
+        registry_dir = REPO_ROOT / "intelligence" / "registry"
+        assert registry_dir.exists(), "Registry directory should exist"
+        assert (registry_dir / "__init__.py").exists()
+    
+    def test_intelligence_has_tests(self):
+        """Test that intelligence has tests."""
+        tests_dir = REPO_ROOT / "intelligence" / "tests"
+        assert tests_dir.exists(), "Tests directory should exist"
+        
+        test_files = list(tests_dir.glob("test_*.py"))
+        assert len(test_files) > 0, "Intelligence should have test files"
+
+
+class TestIntelligencePurity:
+    """Tests for Intelligence layer architecture purity."""
+    
+    def test_intelligence_does_not_import_ai(self):
+        """Test that intelligence does not import AI."""
+        intelligence_dir = REPO_ROOT / "intelligence"
+        
+        for py_file in intelligence_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from openai" not in content
+            assert "import openai" not in content
+            assert "from anthropic" not in content
+            assert "import anthropic" not in content
+            assert "from langchain" not in content
+            assert "import langchain" not in content
+    
+    def test_intelligence_does_not_import_connectors(self):
+        """Test that intelligence does not import connectors."""
+        intelligence_dir = REPO_ROOT / "intelligence"
+        
+        for py_file in intelligence_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from connectors" not in content
+            assert "import connectors" not in content
+    
+    def test_intelligence_does_not_import_applications(self):
+        """Test that intelligence does not import applications."""
+        intelligence_dir = REPO_ROOT / "intelligence"
+        
+        for py_file in intelligence_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from applications" not in content
+            assert "import applications" not in content
+            assert "from apps" not in content
+            assert "import apps" not in content
+    
+    def test_intelligence_does_not_import_infrastructure(self):
+        """Test that intelligence does not import infrastructure."""
+        intelligence_dir = REPO_ROOT / "intelligence"
+        
+        for py_file in intelligence_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from infrastructure" not in content
+            assert "import infrastructure" not in content
+    
+    def test_intelligence_does_not_import_planning(self):
+        """Test that intelligence does not import planning."""
+        intelligence_dir = REPO_ROOT / "intelligence"
+        
+        for py_file in intelligence_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from planning" not in content
+            assert "import planning" not in content
+
+
+class TestDomainIntelligencePurity:
+    """Tests to ensure domain does not import intelligence."""
+    
+    def test_domain_does_not_import_intelligence(self):
+        """Test that domain does not import intelligence."""
+        domain_dir = REPO_ROOT / "domain"
+        
+        for py_file in domain_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from intelligence" not in content
+            assert "import intelligence" not in content
