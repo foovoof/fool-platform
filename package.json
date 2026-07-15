@@ -9,6 +9,7 @@
     "node": ">=20"
   },
   "scripts": {
+    "start": "node -e \"console.log('FOOL Platform Phase 1 — Contracts & Domain layer. No runtime server needed.')\"",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:domain": "vitest run domain/tests",
