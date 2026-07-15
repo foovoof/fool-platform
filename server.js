@@ -1,4 +1,4 @@
-const http = require('http');
+import http from 'http';
 
 const PORT = process.env.PORT || 3000;
 const PLATFORM_NAME = process.env.PLATFORM_NAME || 'FOOL Platform';
