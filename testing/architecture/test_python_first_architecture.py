@@ -1240,3 +1240,174 @@ class TestDomainIntelligencePurity:
             content = py_file.read_text()
             assert "from intelligence" not in content
             assert "import intelligence" not in content
+
+
+class TestCyberMappingFoundation:
+    """Tests for Cyber Mapping Foundation."""
+    
+    def test_cyber_mapping_directory_exists(self):
+        """Test that cyber/mapping directory exists."""
+        mapping_dir = REPO_ROOT / "cyber" / "mapping"
+        assert mapping_dir.exists(), "Cyber/mapping directory should exist"
+    
+    def test_cyber_mapping_has_models(self):
+        """Test that mapping has models.py."""
+        models_file = REPO_ROOT / "cyber" / "mapping" / "models.py"
+        assert models_file.exists(), "models.py should exist"
+    
+    def test_cyber_mapping_has_mapper(self):
+        """Test that mapping has mapper.py."""
+        mapper_file = REPO_ROOT / "cyber" / "mapping" / "mapper.py"
+        assert mapper_file.exists(), "mapper.py should exist"
+    
+    def test_cyber_mapping_has_entity_mapper(self):
+        """Test that mapping has entity_mapper.py."""
+        entity_file = REPO_ROOT / "cyber" / "mapping" / "entity_mapper.py"
+        assert entity_file.exists(), "entity_mapper.py should exist"
+    
+    def test_cyber_mapping_has_relationship_mapper(self):
+        """Test that mapping has relationship_mapper.py."""
+        rel_file = REPO_ROOT / "cyber" / "mapping" / "relationship_mapper.py"
+        assert rel_file.exists(), "relationship_mapper.py should exist"
+    
+    def test_cyber_mapping_has_ontology_mapper(self):
+        """Test that mapping has ontology_mapper.py."""
+        onto_file = REPO_ROOT / "cyber" / "mapping" / "ontology_mapper.py"
+        assert onto_file.exists(), "ontology_mapper.py should exist"
+    
+    def test_cyber_mapping_has_validation(self):
+        """Test that mapping has validation.py."""
+        val_file = REPO_ROOT / "cyber" / "mapping" / "validation.py"
+        assert val_file.exists(), "validation.py should exist"
+    
+    def test_cyber_mapping_has_registry(self):
+        """Test that mapping has registry.py."""
+        reg_file = REPO_ROOT / "cyber" / "mapping" / "registry.py"
+        assert reg_file.exists(), "registry.py should exist"
+    
+    def test_cyber_mapping_has_services(self):
+        """Test that mapping has services.py."""
+        svc_file = REPO_ROOT / "cyber" / "mapping" / "services.py"
+        assert svc_file.exists(), "services.py should exist"
+    
+    def test_cyber_mapping_has_events(self):
+        """Test that mapping has events.py."""
+        evt_file = REPO_ROOT / "cyber" / "mapping" / "events.py"
+        assert evt_file.exists(), "events.py should exist"
+    
+    def test_cyber_mapping_has_init(self):
+        """Test that mapping has __init__.py."""
+        init_file = REPO_ROOT / "cyber" / "mapping" / "__init__.py"
+        assert init_file.exists(), "__init__.py should exist"
+    
+    def test_cyber_mapping_has_tests(self):
+        """Test that mapping has tests."""
+        tests_dir = REPO_ROOT / "cyber" / "mapping" / "tests"
+        assert tests_dir.exists(), "tests directory should exist"
+        
+        test_files = list(tests_dir.glob("test_*.py"))
+        assert len(test_files) > 0, "Mapping should have test files"
+    
+    def test_cyber_mapping_has_readme(self):
+        """Test that mapping has README."""
+        readme = REPO_ROOT / "cyber" / "mapping" / "README.md"
+        assert readme.exists(), "README.md should exist"
+
+
+class TestCyberMappingPurity:
+    """Tests for Cyber Mapping layer architecture purity."""
+    
+    def test_cyber_mapping_does_not_import_intelligence(self):
+        """Test that cyber mapping does not import intelligence."""
+        mapping_dir = REPO_ROOT / "cyber" / "mapping"
+        
+        for py_file in mapping_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from intelligence" not in content
+            assert "import intelligence" not in content
+    
+    def test_cyber_mapping_does_not_import_ai(self):
+        """Test that cyber mapping does not import AI."""
+        mapping_dir = REPO_ROOT / "cyber" / "mapping"
+        
+        for py_file in mapping_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from openai" not in content
+            assert "import openai" not in content
+            assert "from anthropic" not in content
+            assert "import anthropic" not in content
+    
+    def test_cyber_mapping_does_not_import_applications(self):
+        """Test that cyber mapping does not import applications."""
+        mapping_dir = REPO_ROOT / "cyber" / "mapping"
+        
+        for py_file in mapping_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from applications" not in content
+            assert "import applications" not in content
+    
+    def test_cyber_mapping_does_not_import_connectors(self):
+        """Test that cyber mapping does not import connectors."""
+        mapping_dir = REPO_ROOT / "cyber" / "mapping"
+        
+        for py_file in mapping_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            assert "from connectors" not in content
+            assert "import connectors" not in content
+    
+    def test_cyber_mapping_does_not_import_detection(self):
+        """Test that cyber mapping does not import detection."""
+        mapping_dir = REPO_ROOT / "cyber" / "mapping"
+        
+        for py_file in mapping_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            lines = content.split('\n')
+            for line in lines:
+                stripped = line.strip()
+                if stripped.startswith('#') or stripped.startswith('"""') or stripped.startswith("'''"):
+                    continue
+                if 'import' in line or 'from' in line:
+                    assert "detection" not in line.lower()
+    
+    def test_cyber_mapping_does_not_import_sigma(self):
+        """Test that cyber mapping does not import sigma."""
+        mapping_dir = REPO_ROOT / "cyber" / "mapping"
+        
+        for py_file in mapping_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            lines = content.split('\n')
+            for line in lines:
+                stripped = line.strip()
+                if stripped.startswith('#') or stripped.startswith('"""') or stripped.startswith("'''"):
+                    continue
+                if 'import' in line or 'from' in line:
+                    assert "sigma" not in line.lower()
+    
+    def test_cyber_mapping_does_not_import_yara(self):
+        """Test that cyber mapping does not import yara."""
+        mapping_dir = REPO_ROOT / "cyber" / "mapping"
+        
+        for py_file in mapping_dir.rglob("*.py"):
+            if py_file.name.startswith("test_"):
+                continue
+            content = py_file.read_text()
+            lines = content.split('\n')
+            for line in lines:
+                stripped = line.strip()
+                if stripped.startswith('#') or stripped.startswith('"""') or stripped.startswith("'''"):
+                    continue
+                if 'import' in line or 'from' in line:
+                    assert "yara" not in line.lower()
+
